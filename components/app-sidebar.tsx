@@ -24,6 +24,7 @@ import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 import {
   Sidebar,
   SidebarContent,
@@ -71,14 +72,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarGroupLabel>
-            
           <a className="flex items-center gap-2 ">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-xl font-semibold">NotePilot</span>
-              </a>
-
-              
-            
+            <IconInnerShadowTop className="!size-5" />
+            <span className="text-xl font-semibold">NotePilot</span>
+          </a>
+          <div className="ml-auto">
+            <ThemeToggle />
+          </div>
         </SidebarGroupLabel>
       </SidebarHeader>
       <SidebarContent>

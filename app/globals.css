@@ -76,6 +76,16 @@
   --sidebar-accent-foreground: hsl(240 5.9% 10%);
   --sidebar-border: hsl(220 13% 91%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --type-audio-bg: hsl(203, 100%, 95%);
+  --type-YouTube-bg: hsl(0, 100%, 97%);
+  --type-website-bg: hsl(25, 74%, 95%);
+  --type-pdf-bg: hsl(39, 100%, 93%);
+  --type-text-bg: hsl(136, 72%, 93%);
+  --type-audio-color-font: hsl(207, 80%, 49%);
+  --type-YouTube-color-font: hsl(7, 71%, 63%);
+  --type-website-color-font: hsl(257, 70%, 56%);
+  --type-pdf-color-font: hsl(27, 72%, 65%);
+  --type-text-color-font: hsl(135, 47%, 50%);
 }
 
 .dark {
@@ -110,6 +120,16 @@
   --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
   --sidebar-border: hsl(240 3.7% 15.9%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --type-audio-bg: hsl(209, 44%, 14%);
+  --type-YouTube-bg: hsl(4, 19%, 16%);
+  --type-website-bg: hsl(256, 25%, 15%);
+  --type-pdf-bg: hsl(28, 26%, 15%);
+  --type-text-bg: hsl(134, 18%, 14%);
+  --type-audio-color-font: hsl(207, 78%, 57%);
+  --type-YouTube-color-font: hsl(9, 71%, 61%);
+  --type-website-color-font: hsl(256, 76%, 67%);
+  --type-pdf-color-font: hsl(27, 82%, 59%);
+  --type-text-color-font: hsl(137, 52%, 49%);
 }
 
 @layer base {

@@ -38,7 +38,6 @@ export function NavMain({
             
           </SidebarMenuItem>
         </SidebarMenu>
-        <SidebarSeparator />
         <SidebarMenu>
           <SidebarMenuItem>
           <SidebarMenuButton
@@ -50,7 +49,6 @@ export function NavMain({
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-        <SidebarSeparator />
         <SidebarMenu>
           {items.map((item) => {
             const isActive =

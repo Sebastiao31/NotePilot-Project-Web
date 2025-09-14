@@ -1,5 +1,8 @@
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
+import { ChatProvider } from "@/components/chat-provider"
+import { ChatSidebar } from "@/components/chat-sidebar"
+import { ChatInset } from "@/components/chat-inset"
 import {
   SidebarInset,
   SidebarProvider,
@@ -15,11 +18,16 @@ const layout = ({children}: {children: React.ReactNode}) => {
         } as React.CSSProperties
       }
     >
-      <AppSidebar  />
-      <SidebarInset>
-        <SiteHeader />
-        {children}
-      </SidebarInset>
+      <ChatProvider>
+        <AppSidebar  />
+        <SidebarInset>
+          <ChatInset>
+            <SiteHeader />
+            {children}
+          </ChatInset>
+        </SidebarInset>
+        <ChatSidebar />
+      </ChatProvider>
     </SidebarProvider>
   )
 }

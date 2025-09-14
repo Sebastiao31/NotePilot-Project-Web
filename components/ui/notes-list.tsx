@@ -4,7 +4,7 @@ import { NOTES } from '@/constants/notes'
 
 export default function NotesList() {
   return (
-    <div className='flex flex-col gap-3 mt-6'>
+    <div className='flex flex-col gap-4 mt-6'>
       {NOTES.map((note) => (
         <NoteItem key={note.id} note={note} />
       ))}

@@ -24,6 +24,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { IconLayoutSidebarLeftExpand } from "@tabler/icons-react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -52,6 +53,8 @@ function useSidebar() {
 
   return context
 }
+
+
 
 function SidebarProvider({
   defaultOpen = true,
@@ -205,6 +208,7 @@ function Sidebar({
     )
   }
 
+
   return (
     <div
       className="group peer text-sidebar-foreground hidden md:block"
@@ -253,6 +257,8 @@ function Sidebar({
   )
 }
 
+  
+
 function SidebarTrigger({
   className,
   onClick,
@@ -278,6 +284,12 @@ function SidebarTrigger({
     </Button>
   )
 }
+
+
+
+
+
+
 
 function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
   const { toggleSidebar } = useSidebar()
@@ -309,7 +321,7 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
     <main
       data-slot="sidebar-inset"
       className={cn(
-        "bg-background relative flex w-full flex-1 flex-col",
+        "bg-background-primary relative flex w-full flex-1 flex-col",
         "md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2",
         className
       )}
@@ -362,7 +374,7 @@ function SidebarSeparator({
     <Separator
       data-slot="sidebar-separator"
       data-sidebar="separator"
-      className={cn("bg-sidebar-border w-auto", className)}
+      className={cn("bg-sidebar-border w-auto ", className)}
       {...props}
     />
   )

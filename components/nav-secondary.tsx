@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { type Icon } from "@tabler/icons-react"
+import { IconLibraryPlus, type Icon } from "@tabler/icons-react"
 import { usePathname } from "next/navigation"
 
 import {
@@ -10,7 +10,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
 } from "@/components/ui/sidebar"
+import { ThemeToggle } from "./ui/theme-toggle"
 
 export function NavSecondary({
   items,
@@ -41,6 +43,14 @@ export function NavSecondary({
               </SidebarMenuItem>
             )
           })}
+        </SidebarMenu>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <div className="flex items-center px-2 py-3 justify-between gap-2">
+            <span className="text-lg font-medium">Theme</span>
+            <ThemeToggle /> 
+            </div>
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

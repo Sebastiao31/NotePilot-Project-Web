@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import {
+  IconFiles,
   IconCamera,
   IconChartBar,
   IconDashboard,
@@ -34,6 +35,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
 } from "@/components/ui/sidebar"
 
 const data = {
@@ -44,9 +46,9 @@ const data = {
   },
   navMain: [
     {
-      title: "Home",
-      url: "/home",
-      icon: IconSmartHome,
+      title: "Notes",
+      url: "/notes",
+      icon: IconFiles,
     },
     
   ],
@@ -72,13 +74,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarGroupLabel>
+          <div className="flex items-center justify-between w-full pt-5 gap-2">
           <a className="flex items-center gap-2 ">
             <IconInnerShadowTop className="!size-5" />
             <span className="text-xl font-semibold">NotePilot</span>
           </a>
-          <div className="ml-auto">
-            <ThemeToggle />
           </div>
+          
         </SidebarGroupLabel>
       </SidebarHeader>
       <SidebarContent>

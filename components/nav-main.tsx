@@ -5,6 +5,14 @@ import { usePathname } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
@@ -12,6 +20,7 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from "@/components/ui/sidebar"
+import MoreOptions from "@/components/modals/more-options"
 
 export function NavMain({
   items,
@@ -30,6 +39,7 @@ export function NavMain({
           <SidebarMenuItem className="flex items-center gap-2">
             <SidebarMenuButton
               tooltip="Record Audio"
+              size="record"
               className="justify-center bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
             >
               <IconMicrophone className="!size-5" />
@@ -38,18 +48,28 @@ export function NavMain({
             
           </SidebarMenuItem>
         </SidebarMenu>
+        <SidebarSeparator />
         <SidebarMenu>
-          <SidebarMenuItem>
-          <SidebarMenuButton
-              tooltip="More Options"
-              variant="ghost"
-            >
-              <IconLibraryPlus className="!size-5" />
-              <span>More Options</span>
-            </SidebarMenuButton>
+        <SidebarMenuItem>
+          <Dialog>
+            <DialogTrigger asChild>
+              <SidebarMenuButton
+                tooltip="More Options"
+                variant="ghost"
+              >
+                <IconLibraryPlus className="!size-5" />
+                <span>More Options</span>
+              </SidebarMenuButton>
+            </DialogTrigger>
+            <DialogContent>
+              <MoreOptions />
+            </DialogContent>
+          </Dialog>
           </SidebarMenuItem>
         </SidebarMenu>
+        <SidebarSeparator />
         <SidebarMenu>
+        
           {items.map((item) => {
             const isActive =
               pathname === item.url || pathname.startsWith(item.url + "/")

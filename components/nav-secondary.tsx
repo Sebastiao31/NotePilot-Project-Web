@@ -47,7 +47,7 @@ export function NavSecondary({
         <SidebarMenu>
           <SidebarMenuItem>
             <div className="flex items-center px-2 py-3 justify-between gap-2">
-            <span className="text-lg font-medium">Theme</span>
+            <span className="text-[16px] font-medium">Theme</span>
             <ThemeToggle /> 
             </div>
           </SidebarMenuItem>

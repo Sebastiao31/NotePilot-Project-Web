@@ -1,0 +1,33 @@
+// I am adding a client-side auth guard that redirects unauthenticated users to /signin.
+"use client"
+
+import * as React from 'react'
+import { useRouter, usePathname } from 'next/navigation'
+import { useUserData } from '@/hooks/use-user-data'
+
+type Props = {
+  children: React.ReactNode
+}
+
+export default function AuthGuard({ children }: Props) {
+  const { authUser, loading } = useUserData()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  React.useEffect(() => {
+    if (loading) return
+    if (!authUser) {
+      router.replace('/signin')
+    }
+  }, [authUser, loading, router, pathname])
+
+  if (loading) {
+    return null
+  }
+
+  if (!authUser) return null
+
+  return <>{children}</>
+}
+
+

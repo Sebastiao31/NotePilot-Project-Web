@@ -7,6 +7,7 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
+import AuthGuard from "@/components/auth-guard"
 
 const layout = ({children}: {children: React.ReactNode}) => {
   return (
@@ -19,14 +20,16 @@ const layout = ({children}: {children: React.ReactNode}) => {
       }
     >
       <ChatProvider>
-        <AppSidebar  />
-        <SidebarInset>
-          <ChatInset>
-            <SiteHeader />
-            {children}
-          </ChatInset>
-        </SidebarInset>
-        <ChatSidebar />
+        <AuthGuard>
+          <AppSidebar />
+          <SidebarInset>
+            <ChatInset>
+              <SiteHeader />
+              {children}
+            </ChatInset>
+          </SidebarInset>
+          <ChatSidebar />
+        </AuthGuard>
       </ChatProvider>
     </SidebarProvider>
   )

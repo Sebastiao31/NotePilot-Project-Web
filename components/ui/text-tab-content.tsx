@@ -8,7 +8,7 @@ const TextTabContent = () => {
   return (
     <main className='flex flex-col space-y-8 mt-8'>
         <div className='flex flex-col gap-2'>
-            <label htmlFor="text">Text</label>
+            <label htmlFor="text" className='text-start'>Text</label>
             <PasteText />
         </div>
 

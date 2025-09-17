@@ -24,9 +24,12 @@ const MoreOptions = () => {
                 </DialogClose>
             </div>
         </div>
+
+        <div className="flex justify-start">
             <DialogDescription>
                   Choose how you want to create your note.
             </DialogDescription>
+            </div>
 
         <Separator className="my-4"/>
 

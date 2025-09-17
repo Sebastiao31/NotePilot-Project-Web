@@ -6,8 +6,8 @@ import { Button } from './button'
 const YoutubeTabContent = () => {
   return (
     <main className='flex flex-col space-y-8 mt-8'>
-        <div className='flex flex-col gap-2'>
-            <label htmlFor="youtube-url">YouTube URL</label>
+        <div className='flex flex-col gap-2 '>
+            <label htmlFor="youtube-url" className='text-start'>YouTube URL</label>
             <Input type="text" id="youtube-url" placeholder="Enter YouTube URL" />
         </div>
 
@@ -15,7 +15,7 @@ const YoutubeTabContent = () => {
             <SelectFolder />
         </div>
 
-        <div>
+        <div className="text-start">
             <p className='text-sm text-muted-foreground'>*Only public Youtube videos are supported</p>
             <p className='text-sm text-muted-foreground'>*Recent uploaded videos can’t be availble for import yet</p>
         </div>

@@ -1,17 +1,63 @@
+
+"use client"
+
 import React from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { IconFolder, IconFolderPlus, IconListDetails } from '@tabler/icons-react'
+import { Button } from './ui/button'
+import CreateFolder from './ui/create-folder'
+import EditFolder from './ui/edit-folder'
+import { Dialog, DialogTrigger, DialogContent } from './ui/dialog'
+import { SidebarMenuButton } from './ui/sidebar'
+import CreateFolderModal from './modals/create-folder-modal'
+import EditFolderModal from './modals/edit-folder-modal'
+import { useFolders } from '@/hooks/use-folders'
 
 const noteFilter = () => {
+  const { folders } = useFolders()
   return (
     <div>
-        <Select>
+        <Select defaultValue="view-all">
           <SelectTrigger>
-            <SelectValue placeholder='Select a note' />
+            <SelectValue placeholder='Select a folder' />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='1'>Note 1</SelectItem>
-            <SelectItem value='2'>Note 2</SelectItem>
-            <SelectItem value='3'>Note 3</SelectItem>
+            <SelectGroup>
+              <SelectLabel>Folders</SelectLabel>
+
+              <SelectItem value='view-all'>
+                <IconListDetails className="size-5 -text-background-primary" />
+                View All
+              </SelectItem>
+              {folders.map((f) => (
+                <SelectItem key={f.id} value={f.id}>
+                  <IconFolder className="size-5" style={{ color: f.color }} />
+                  {f.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+            <SelectSeparator />
+            <SelectGroup>
+              
+              <Dialog>
+                <DialogTrigger asChild>
+                  <CreateFolder />
+                </DialogTrigger>
+                <DialogContent>
+                  <CreateFolderModal />
+                </DialogContent>
+              </Dialog>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                    <EditFolder />
+                </DialogTrigger>
+                <DialogContent>
+                    <EditFolderModal />
+                </DialogContent>
+              </Dialog>
+              
+            </SelectGroup>
           </SelectContent>
         </Select>
     </div>

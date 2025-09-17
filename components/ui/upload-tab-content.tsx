@@ -7,7 +7,7 @@ const UploadTabContent = () => {
   return (
     <main className='flex flex-col space-y-8 mt-8'>
         <div className='flex flex-col gap-2'>
-            <label htmlFor="upload-file">Upload File</label>
+            <label htmlFor="upload-file" className='text-start'>Upload File</label>
             <UploadFile />
         </div>
 

@@ -7,7 +7,7 @@ const WebsiteTabContent = () => {
   return (
     <main className='flex flex-col space-y-8 mt-8'>
         <div className='flex flex-col gap-2'>
-            <label htmlFor="website-url">Website URL</label>
+            <label htmlFor="website-url" className='text-start'>Website URL</label>
             <Input type="text" id="website-url" placeholder="Enter Website URL" />
         </div>
 
@@ -15,7 +15,7 @@ const WebsiteTabContent = () => {
             <SelectFolder />
         </div>
 
-        <div>
+        <div className="text-start">
             <p className='text-sm text-muted-foreground'>*It’ll be imported only the visible text of the website</p>
             <p className='text-sm text-muted-foreground'>*Paid articles may not be compatible</p>
         </div>

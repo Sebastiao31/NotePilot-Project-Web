@@ -5,7 +5,7 @@ const selectFolder = () => {
   return (
     <main>
         <div className='flex flex-col gap-2'>
-            <label htmlFor="folder">Folder</label>
+            <label htmlFor="folder" className='text-start'>Folder</label>
             <Select>
                 <SelectTrigger className='w-full'>
                     <SelectValue placeholder="Select a folder" />

@@ -94,6 +94,13 @@
   --type-text-color-font: hsl(135, 47%, 50%);
   --background-primary: hsl(0, 0%, 100%);
   --upload-file-bg: hsl(0, 0%, 100%);
+  /* Callout (light) */
+  --callout-tip-bg: hsl(151 81% 96%);
+  --callout-tip-border: hsl(151 55% 60%);
+  --callout-info-bg: hsl(210 100% 97%);
+  --callout-info-border: hsl(210 60% 70%);
+  --callout-warning-bg: hsl(40 100% 96%);
+  --callout-warning-border: hsl(40 85% 70%);
 }
 
 .dark {
@@ -142,6 +149,13 @@
   --type-text-color-font: hsl(137, 52%, 49%);
   --background-primary: hsl(240, 6%, 10%);
   --upload-file-bg: hsl(240, 3%, 20%);
+  /* Callout (dark) */
+  --callout-tip-bg: hsl(151 35% 14%);
+  --callout-tip-border: hsl(151 50% 36%);
+  --callout-info-bg: hsl(210 40% 16%);
+  --callout-info-border: hsl(210 55% 42%);
+  --callout-warning-bg: hsl(40 45% 16%);
+  --callout-warning-border: hsl(40 65% 42%);
 }
 
 @layer base {
@@ -150,5 +164,22 @@
   }
   body {
     @apply bg-background-primary text-foreground;
+  }
+  .callout {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: var(--radius-md);
+  }
+  .callout-tip {
+    background-color: var(--callout-tip-bg);
+    border-color: var(--callout-tip-border);
+  }
+  .callout-info {
+    background-color: var(--callout-info-bg);
+    border-color: var(--callout-info-border);
+  }
+  .callout-warning {
+    background-color: var(--callout-warning-bg);
+    border-color: var(--callout-warning-border);
   }
 }

@@ -1,19 +1,29 @@
+"use client"
 import React from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { useFolders } from '@/hooks/use-folders'
 
-const selectFolder = () => {
+type Props = {
+  value: string | undefined
+  onChange: (folderId: string) => void
+  disabled?: boolean
+}
+
+const SelectFolder = ({ value, onChange, disabled }: Props) => {
+  const { folders, loading } = useFolders()
+
   return (
     <main>
         <div className='flex flex-col gap-2'>
             <label htmlFor="folder" className='text-start'>Folder</label>
-            <Select>
+            <Select value={value} onValueChange={onChange} disabled={disabled || loading}>
                 <SelectTrigger className='w-full'>
-                    <SelectValue placeholder="Select a folder" />
+                    <SelectValue placeholder={loading ? 'Loading folders…' : 'Select a folder'} />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="1">Folder 1</SelectItem>
-                    <SelectItem value="2">Folder 2</SelectItem>
-                    <SelectItem value="3">Folder 3</SelectItem>
+                    {folders.map((f) => (
+                      <SelectItem key={f.id} value={f.id!}>{f.name}</SelectItem>
+                    ))}
                 </SelectContent>
             </Select>
         </div>
@@ -21,4 +31,4 @@ const selectFolder = () => {
   )
 }
 
-export default selectFolder
+export default SelectFolder

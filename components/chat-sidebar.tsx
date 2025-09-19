@@ -3,17 +3,14 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { useChatSidebar } from "./chat-provider"
-import { IconChevronsRight } from "@tabler/icons-react"
+import { IconChevronsRight, IconClock, IconPlus } from "@tabler/icons-react"
 import { Button } from "./ui/button"
 import ChatInput from "./ui/chat-input"
 import { useParams } from "next/navigation"
-import { doc, onSnapshot } from "firebase/firestore"
+import { doc, onSnapshot, collection, addDoc, serverTimestamp, query, orderBy, setDoc } from "firebase/firestore"
 import { getFirebase } from "@/lib/firebase"
-import ReactMarkdown from "react-markdown"
-import remarkGfm from "remark-gfm"
-import remarkMath from "remark-math"
-import rehypeRaw from "rehype-raw"
-import rehypeKatex from "rehype-katex"
+import MarkdownChat from "./ui/markdown-chat"
+import { AllChats } from "./ui/all-chats"
 
 export function ChatSidebar() {
   const { open, width, setWidth, minWidth, maxWidth, toggle } = useChatSidebar()
@@ -39,6 +36,7 @@ export function ChatSidebar() {
   const [messages, setMessages] = React.useState<Message[]>([])
   const [input, setInput] = React.useState("")
   const [loading, setLoading] = React.useState(false)
+  const [chatId, setChatId] = React.useState<string | null>(null)
 
   const isDraggingRef = React.useRef(false)
   const startXRef = React.useRef(0)
@@ -76,12 +74,49 @@ export function ChatSidebar() {
     }
   }, [onPointerMove, endDrag])
 
+  // Subscribe to messages for the active chat
+  React.useEffect(() => {
+    if (!noteId || !chatId) {
+      setMessages([])
+      return
+    }
+    const q = query(collection(db, "notes", noteId, "chats", chatId, "messages"), orderBy("createdAt", "asc"))
+    const unsub = onSnapshot(q, (snap) => {
+      const rows: Message[] = []
+      snap.forEach((d) => {
+        const data = d.data() as any
+        rows.push({ id: d.id, role: data.role, content: data.content })
+      })
+      setMessages(rows)
+    })
+    return () => unsub()
+  }, [db, noteId, chatId])
+
+  const newChat = React.useCallback(async () => {
+    if (!noteId) return null
+    const ref = await addDoc(collection(db, "notes", noteId, "chats"), {
+      title: "Untitled",
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    })
+    setChatId(ref.id)
+    return ref.id
+  }, [db, noteId])
+
   const ask = React.useCallback(async () => {
     const question = input.trim()
     if (!question || !noteId) return
     setLoading(true)
-    const userMsg: Message = { id: crypto.randomUUID(), role: "user", content: question }
-    setMessages((prev) => [...prev, userMsg])
+    // Ensure we have an active chat
+    const activeChatId = chatId || (await newChat())
+    if (!activeChatId) return
+    const messagesCol = collection(db, "notes", noteId, "chats", activeChatId, "messages")
+    await addDoc(messagesCol, { role: "user", content: question, createdAt: serverTimestamp() })
+    // If chat has generic title, set it to first 60 chars of the user question
+    await setDoc(doc(db, "notes", noteId, "chats", activeChatId), {
+      title: question.slice(0, 60),
+      updatedAt: serverTimestamp(),
+    }, { merge: true })
     setInput("")
     try {
       const res = await fetch(`/api/notes/${noteId}/chat`, {
@@ -91,15 +126,14 @@ export function ChatSidebar() {
       })
       const data = await res.json()
       const answer = (data?.answer ?? "") as string
-      const asstMsg: Message = { id: crypto.randomUUID(), role: "assistant", content: answer || "(No answer)" }
-      setMessages((prev) => [...prev, asstMsg])
+      await addDoc(messagesCol, { role: "assistant", content: answer || "(No answer)", createdAt: serverTimestamp() })
+      await setDoc(doc(db, "notes", noteId, "chats", activeChatId), { updatedAt: serverTimestamp() }, { merge: true })
     } catch (err) {
-      const asstMsg: Message = { id: crypto.randomUUID(), role: "assistant", content: "Sorry, something went wrong." }
-      setMessages((prev) => [...prev, asstMsg])
+      await addDoc(messagesCol, { role: "assistant", content: "Sorry, something went wrong.", createdAt: serverTimestamp() })
     } finally {
       setLoading(false)
     }
-  }, [input, noteId, noteText, transcript])
+  }, [input, noteId, noteText, transcript, chatId, db, newChat])
 
   const messagesEndRef = React.useRef<HTMLDivElement | null>(null)
   React.useEffect(() => {
@@ -127,6 +161,17 @@ export function ChatSidebar() {
                 <IconChevronsRight className="size-5 text-accent-foreground/60" />
             </Button>
           <h2 className="text-foreground text-base font-semibold">Ai Chat</h2>
+
+          <div className="flex items-center gap-2 ml-auto">
+
+            <AllChats noteId={noteId} value={chatId} onSelect={(id) => setChatId(id)} />
+
+            <Button variant="ghost" size="icon" onClick={() => newChat()}>
+              <IconPlus className="size-5" />
+            </Button>
+
+            
+          </div>
         </div>
         <div className="flex-1 overflow-y-auto p-4 text-[16px] space-y-4">
           {messages.length === 0 ? (
@@ -138,36 +183,7 @@ export function ChatSidebar() {
                   "max-w-[85%] rounded-xl px-4 py-3 break-words",
                   m.role === "user" ? "bg-sidebar" : "bg-background-primary"
                 )}>
-                  <ReactMarkdown
-                    rehypePlugins={[rehypeRaw, rehypeKatex]}
-                    remarkPlugins={[remarkGfm, remarkMath]}
-                    components={{
-                      h1: ({node, ...props}) => <h1 className="mt-1 mb-2 text-[18px] font-semibold" {...props} />,
-                      h2: ({node, ...props}) => <h2 className="mt-1 mb-2 text-[17px] font-semibold" {...props} />,
-                      h3: ({node, ...props}) => <h3 className="mt-1 mb-2 text-[16px] font-semibold" {...props} />,
-                      p: ({node, ...props}) => <p className="mt-1 mb-2 leading-7 text-[16px] text-foreground" {...props} />,
-                      a: ({node, ...props}) => <a className="underline text-[16px] underline-offset-2 text-primary" {...props} />,
-                      ul: ({node, ...props}) => <ul className="mt-1 mb-2 list-disc text-[16px] pl-5 space-y-1" {...props} />,
-                      ol: ({node, ...props}) => <ol className="mt-1 mb-2 list-decimal text-[16px] pl-5 space-y-1" {...props} />,
-                      li: ({node, ...props}) => <li className="leading-6 text-[16px]" {...props} />,
-                      blockquote: ({node, ...props}) => <blockquote className="mt-2 mb-2 border-l-2 pl-3 italic text-muted-foreground" {...props} />,
-                      hr: () => <div className="my-3 border-t" />,
-                      code: ({node, inline, ...props}: any) => inline ? (
-                        <code className="rounded bg-muted px-1.5 py-0.5 text-[0.9em]" {...props} />
-                      ) : (
-                        <code className="block rounded bg-muted my-2 p-3 text-[0.9em] overflow-x-auto" {...props} />
-                      ),
-                      table: ({node, ...props}) => (
-                        <div className="my-3 overflow-x-auto">
-                          <table className="w-full text-sm border-separate border-spacing-0" {...props} />
-                        </div>
-                      ),
-                      th: ({node, ...props}) => <th className="border border-border px-2 py-1 bg-muted/50 text-left font-medium" {...props} />,
-                      td: ({node, ...props}) => <td className="border border-border px-2 py-1 align-top" {...props} />,
-                    }}
-                  >
-                    {m.content?.trim?.() ?? m.content}
-                  </ReactMarkdown>
+                  <MarkdownChat content={m.content?.trim?.() ?? m.content} />
                 </div>
               </div>
             ))

@@ -47,6 +47,11 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, [clamp])
 
+  // Do not persist open/close across pages: always start closed, SiteHeader will control per-route default
+  React.useEffect(() => {
+    setOpen(false)
+  }, [])
+
   const setWidth = React.useCallback((value: number | ((w: number) => number)) => {
     _setWidth((prev) => {
       const next = typeof value === "function" ? (value as (w: number) => number)(prev) : value

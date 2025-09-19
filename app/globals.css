@@ -45,6 +45,16 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-callout-tip-bg: var(--callout-tip-bg);
+  --color-callout-tip-border: var(--callout-tip-border);
+  --color-callout-info-bg: var(--callout-info-bg);
+  --color-callout-info-border: var(--callout-info-border);
+  --color-callout-warning-bg: var(--callout-warning-bg);
+  --color-callout-warning-border: var(--callout-warning-border);
+  --color-like: var(--like);
+  --color-like-foreground: var(--like-foreground);
+  --color-dislike: var(--dislike);
+  --color-dislike-foreground: var(--dislike-foreground);
 }
 
 :root {
@@ -94,6 +104,11 @@
   --type-text-color-font: hsl(135, 47%, 50%);
   --background-primary: hsl(0, 0%, 100%);
   --upload-file-bg: hsl(0, 0%, 100%);
+  /* Feedback (light) */
+  --like: hsl(130, 45%, 48%);
+  --like-foreground: hsl(134, 71%, 93%);
+  --dislike: hsl(8, 75%, 62%);
+  --dislike-foreground: hsl(11, 81%, 96%);
   /* Callout (light) */
   --callout-tip-bg: hsl(151 81% 96%);
   --callout-tip-border: hsl(151 55% 60%);
@@ -149,6 +164,11 @@
   --type-text-color-font: hsl(137, 52%, 49%);
   --background-primary: hsl(240, 6%, 10%);
   --upload-file-bg: hsl(240, 3%, 20%);
+  /* Feedback (dark) */
+  --like: hsl(138, 56%, 50%);
+  --like-foreground: hsl(134, 18%, 14%);
+  --dislike: hsl(7, 72%, 62%);
+  --dislike-foreground: hsl(4, 19%, 16%);
   /* Callout (dark) */
   --callout-tip-bg: hsl(151 35% 14%);
   --callout-tip-border: hsl(151 50% 36%);

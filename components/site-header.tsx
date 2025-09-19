@@ -6,14 +6,24 @@ import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar"
 import CreateFolder from "./create-folder"
 import ChatTrigger from "./chat-trigger"
 import { usePathname } from "next/navigation"
+import * as React from "react"
+import { useChatSidebar } from "./chat-provider"
 
 export function SiteHeader() {
   const { state } = useSidebar()
   const pathname = usePathname()
   const showNoteActions = !!pathname && /^\/notes\/[^/]+\/?$/.test(pathname)
+  const { setOpen } = useChatSidebar()
+
+  // Ensure chat sidebar default state per route:
+  // - Open by default on note detail pages
+  // - Closed on other pages (e.g., notes list)
+  React.useEffect(() => {
+    setOpen(showNoteActions)
+  }, [showNoteActions, setOpen])
   
   return (
-    <header className="bg-background-primary flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
+    <header className="bg-background-primary sticky top-0 z-40 flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
       <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
           <SidebarTrigger className="-ml-1 " />
           <Separator

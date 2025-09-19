@@ -4,6 +4,8 @@ import { doc, onSnapshot } from 'firebase/firestore'
 import { getFirebase } from '@/lib/firebase'
 import MarkdownViewer from '@/components/ui/markdown-viewer'
 import { useParams } from 'next/navigation'
+import Satisfied from '@/components/satisfied'
+import { Separator } from '@/components/ui/separator'
 
 const Page = () => {
   const { db } = getFirebase()
@@ -27,6 +29,12 @@ const Page = () => {
     <div className='p-8 bg-background-primary h-full'>
       <h1 className='text-2xl font-semibold mb-6'>{title || 'Untitled note'}</h1>
       <MarkdownViewer content={content || ''} />
+
+      
+
+      <div>
+        <Satisfied />
+      </div>
     </div>
   )
 }

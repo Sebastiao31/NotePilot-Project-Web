@@ -20,7 +20,7 @@ export default function ChatInput({ value, onChange, onSubmit, loading, placehol
   }
 
   return (
-    <div className='flex items-center gap-2'>
+    <div className='flex w-full items-center gap-2'>
       <div className='w-full'>
         <Input
           type='text'

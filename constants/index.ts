@@ -26,12 +26,16 @@ export const SUMMARIZE_PROMPT: SummarizePromptConfig = {
     > [!TIP] Title\nBody text...
     > [!INFO] Title\nBody text...
     > [!WARNING] Title\nBody text...
+  - ALWAYS when citing short phrases or quotes like ("Cogito, ergo sum", "Viver sem filosofar é o que se chama ter os olhos fechados sem nunca os haver tentado abrir. - Rene Descartes”) from the source, use Markdown blockquotes (start the line with "> "). 
+    "> This is the first line of the quote.
+    > This is the second line of the quote.
+    > This is the third line of the quote."
+  
   - Checklists when tasks exist: "- [ ] item" or "- [x] item".
   - Tables with standard GitHub‑Flavored Markdown for comparisons. Add tables when it makes sense and is valuable for the user.
   - Math: ALWAYS AUTO DETECT math equations. ALWAYS wrap inline equations in \`$...$\` and block/display equations in \`$$...$$\`. Use standard LaTeX math commands (e.g., \`\\frac{...}{...}\`, \`\\cdot\`, superscripts \`^\`, subscripts \`_\`). Example inline: \`$A=\\pi r^2$\`. Example block:
     > $$ blockdisplay equations $$ (detect the best way to display a math equation)
     > $ inlineequations $ (detect the best way to display a math equation)
-    
   - Return valid Markdown only; no HTML wrappers.
   - Do NOT add boilerplate like "Here are your notes".
   

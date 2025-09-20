@@ -18,8 +18,8 @@ const Callout: React.FC<{ type: 'TIP' | 'INFO' | 'WARNING'; title?: string; chil
   const cls = type === 'TIP' ? 'callout callout-tip' : type === 'INFO' ? 'callout callout-info' : 'callout callout-warning'
   return (
     <div className={`${cls} p-3 my-2`}>
-      <div className="font-semibold mb-1">{title ?? type}</div>
-      <div className="text-sm leading-6">{children}</div>
+      <div className="font-semibold  mb-1">{title ?? type}</div>
+      <div className="text-md leading-6">{children}</div>
     </div>
   )
 }
@@ -71,7 +71,7 @@ export default function MarkdownViewer({ content, showTOC=false }: Props) {
           ul: ({node, ...props}) => <ul className="my-4 text-lg list-disc pl-6 space-y-2" {...props} />,
           ol: ({node, ...props}) => <ol className="my-4 text-lg list-decimal pl-6 space-y-2" {...props} />,
           li: ({node, ...props}) => <li className="leading-7 text-lg" {...props} />,
-          blockquote: ({node, ...props}) => <blockquote className="my-6 border-l-2 pl-4 italic text-muted-foreground" {...props} />,
+          blockquote: ({node, ...props}) => <blockquote className="my-6 border-l-2 pl-4 italic font-semibold" {...props} />,
           hr: () => <div className="my-8 border-t" />,
           img: ({node, ...props}) => <img className="my-6 rounded-lg" {...props} />,
           code: ({node, inline, ...props}: any) => inline ? (

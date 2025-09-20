@@ -2,17 +2,77 @@ import React from 'react'
 import { Input } from '@/components/ui/input'
 import SelectFolder from '@/components/ui/select-folder'
 import { Button } from './button'
+import { useUserData } from '@/hooks/use-user-data'
+import { getFirebase, serverTimestamp } from '@/lib/firebase'
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
 
 const WebsiteTabContent = () => {
+  const { authUser } = useUserData()
+  const [url, setUrl] = React.useState('')
+  const [folderId, setFolderId] = React.useState<string | undefined>(undefined)
+  const [loading, setLoading] = React.useState(false)
+
+  const handleWebsite = async () => {
+    if (loading) return
+    const clean = url.trim()
+    if (!authUser || !clean) return
+    try {
+      new URL(clean)
+    } catch {
+      return
+    }
+    setLoading(true)
+    const { db } = getFirebase()
+    try {
+      const placeholder = {
+        userId: authUser.uid,
+        title: 'Website note',
+        note: 'Generating summary…',
+        transcript: `Source: ${clean}`,
+        date: serverTimestamp(),
+        folder: folderId ?? null,
+        satisfied: null,
+        status: 'generating',
+        type: 'Website',
+      }
+      const ref = await addDoc(collection(db, 'notes'), placeholder)
+
+      const res = await fetch('/api/notes/website', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: clean })
+      })
+      if (!res.ok) throw new Error('Website summarize failed')
+      const data = await res.json()
+      const summary: string = data.summary || ''
+      const title: string = (data.title || '').slice(0, 80)
+      const transcript: string = data.transcript || ''
+
+      await updateDoc(doc(db, 'notes', ref.id), {
+        note: summary,
+        title: title || placeholder.title,
+        transcript: transcript,
+        status: 'ready',
+      })
+
+      setUrl('')
+      setFolderId(undefined)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <main className='flex flex-col space-y-8 mt-8'>
         <div className='flex flex-col gap-2'>
             <label htmlFor="website-url" className='text-start'>Website URL</label>
-            <Input type="text" id="website-url" placeholder="Enter Website URL" />
+            <Input type="text" id="website-url" placeholder="Enter Website URL" value={url} onChange={(e) => setUrl(e.target.value)} />
         </div>
 
         <div>
-            <SelectFolder />
+            <SelectFolder value={folderId} onChange={setFolderId} disabled={loading} />
         </div>
 
         <div className="text-start">
@@ -21,8 +81,8 @@ const WebsiteTabContent = () => {
         </div>
         
         <div>
-            <Button className='w-full h-12'>
-                Summarize website link
+            <Button className='w-full h-12' onClick={handleWebsite} disabled={!url.trim() || !authUser || loading}>
+                {loading ? 'Summarizing…' : 'Summarize website link'}
             </Button>
         </div>
     </main>

@@ -12,6 +12,8 @@ type NoteSidebarContextValue = {
   maxWidth: number
   selectedFolder: string | null
   setSelectedFolder: (name: string | null) => void
+  searchQuery: string
+  setSearchQuery: (value: string) => void
 }
 
 const NoteSidebarContext = React.createContext<NoteSidebarContextValue | null>(null)
@@ -38,10 +40,11 @@ export function NoteProvider({ children }: { children: React.ReactNode }) {
 
   // Folder filter state (null => all notes)
   const [selectedFolder, setSelectedFolder] = React.useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = React.useState<string>("")
 
   const value = React.useMemo(
-    () => ({ open, setOpen, toggle, width, setWidth, minWidth, maxWidth, selectedFolder, setSelectedFolder }),
-    [open, width, setWidth, minWidth, maxWidth, selectedFolder]
+    () => ({ open, setOpen, toggle, width, setWidth, minWidth, maxWidth, selectedFolder, setSelectedFolder, searchQuery, setSearchQuery }),
+    [open, width, setWidth, minWidth, maxWidth, selectedFolder, searchQuery]
   )
 
   return (

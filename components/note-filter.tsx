@@ -16,10 +16,15 @@ import { useNoteSidebar } from './note-provider'
 
 const noteFilter = () => {
   const { folders } = useFolders()
-  const { setSelectedFolder } = useNoteSidebar()
+  const { selectedFolder, setSelectedFolder } = useNoteSidebar()
+  const selectedValue = React.useMemo(() => {
+    if (!selectedFolder) return 'view-all'
+    const f = folders.find((x) => x.name === selectedFolder)
+    return f ? f.id : 'view-all'
+  }, [selectedFolder, folders])
   return (
     <div>
-        <Select defaultValue="view-all" onValueChange={(value) => {
+        <Select value={selectedValue} onValueChange={(value) => {
           if (value === 'view-all') setSelectedFolder(null)
           else {
             const folder = folders.find((f) => f.id === value)
@@ -33,7 +38,7 @@ const noteFilter = () => {
             <SelectGroup>
               <SelectLabel>Folders</SelectLabel>
 
-              <SelectItem value='view-all truncate'>
+              <SelectItem value='view-all'>
                 All notes
               </SelectItem>
               {folders.map((f) => (

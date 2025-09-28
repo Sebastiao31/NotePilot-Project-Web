@@ -2,6 +2,7 @@
 import React from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useFolders } from '@/hooks/use-folders'
+import { IconFolder } from '@tabler/icons-react'
 
 type Props = {
   value: string | undefined
@@ -22,7 +23,12 @@ const SelectFolder = ({ value, onChange, disabled }: Props) => {
                 </SelectTrigger>
                 <SelectContent>
                     {folders.map((f) => (
-                      <SelectItem key={f.id} value={f.id!}>{f.name}</SelectItem>
+                      <SelectItem key={f.id} value={f.id!}>
+                        <div className='flex items-center gap-2'>
+                          <IconFolder className='size-4' style={{ color: f.color }} />
+                          <span>{f.name}</span>
+                        </div>
+                      </SelectItem>
                     ))}
                 </SelectContent>
             </Select>

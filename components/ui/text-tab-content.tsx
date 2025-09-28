@@ -7,9 +7,11 @@ import { Separator } from './separator'
 import { getFirebase, serverTimestamp } from '@/lib/firebase'
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
 import { useUserData } from '@/hooks/use-user-data'
+import { useFolders } from '@/hooks/use-folders'
 
 const TextTabContent = () => {
   const { authUser } = useUserData()
+  const { folders } = useFolders()
   const [text, setText] = React.useState('')
   const [folderId, setFolderId] = React.useState<string | undefined>(undefined)
   const [loading, setLoading] = React.useState(false)
@@ -21,13 +23,14 @@ const TextTabContent = () => {
     setLoading(true)
     const { db } = getFirebase()
     try {
+      const selectedFolderName = folders.find((f) => f.id === folderId)?.name ?? null
       const placeholder = {
         userId: authUser.uid,
         title: clean.slice(0, 80) || 'New Note',
         note: '',
         transcript: clean,
         date: serverTimestamp(),
-        folder: folderId ?? null,
+        folder: selectedFolderName,
         satisfied: null,
         status: 'generating',
         type: 'Text',

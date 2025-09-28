@@ -2,9 +2,11 @@ import React from 'react'
 import UploadFile from '@/components/ui/upload-file'
 import SelectFolder from '@/components/ui/select-folder'
 import { Button } from './button'
+import { useFolders } from '@/hooks/use-folders'
 
 const UploadTabContent = () => {
   const [folderId, setFolderId] = React.useState<string | undefined>(undefined)
+  const { folders } = useFolders()
   const [loading, setLoading] = React.useState(false)
   
   return (

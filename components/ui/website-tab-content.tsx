@@ -4,10 +4,12 @@ import SelectFolder from '@/components/ui/select-folder'
 import { Button } from './button'
 import { useUserData } from '@/hooks/use-user-data'
 import { getFirebase, serverTimestamp } from '@/lib/firebase'
+import { useFolders } from '@/hooks/use-folders'
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
 
 const WebsiteTabContent = () => {
   const { authUser } = useUserData()
+  const { folders } = useFolders()
   const [url, setUrl] = React.useState('')
   const [folderId, setFolderId] = React.useState<string | undefined>(undefined)
   const [loading, setLoading] = React.useState(false)
@@ -24,6 +26,7 @@ const WebsiteTabContent = () => {
     setLoading(true)
     const { db } = getFirebase()
     try {
+      const selectedFolderName = folders.find((f) => f.id === folderId)?.name ?? null
       const placeholder = {
         userId: authUser.uid,
         title: 'Website note',
@@ -31,7 +34,7 @@ const WebsiteTabContent = () => {
         transcript: `Source: ${clean}`,
         source: clean,
         date: serverTimestamp(),
-        folder: folderId ?? null,
+        folder: selectedFolderName,
         satisfied: null,
         status: 'generating',
         type: 'Website',

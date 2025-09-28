@@ -1,3 +1,4 @@
+import React from 'react'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -16,12 +17,15 @@ import { useFolders } from "@/hooks/use-folders"
 import type { NoteDoc } from "@/hooks/use-notes"
 import { doc, updateDoc } from "firebase/firestore"
 import { getFirebase } from "@/lib/firebase"
+import { Dialog, DialogContent, DialogTrigger } from "./dialog"
+import RenameNote from "../modals/rename-note"
 
 type Props = { note: NoteDoc }
 
 const noteMore = ({ note }: Props) => {
   const { folders, loading } = useFolders()
   const { db } = getFirebase()
+  const [openRename, setOpenRename] = React.useState(false)
 
   const moveToFolder = async (folderName: string | null) => {
     try {
@@ -42,7 +46,7 @@ const noteMore = ({ note }: Props) => {
 
     <DropdownMenuContent className="mr-12">
         <DropdownMenuLabel>More</DropdownMenuLabel>
-        <DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => setOpenRename(true)}>
             <IconPencil className="size-5 text-accent-foreground" />
             Edit</DropdownMenuItem>
 
@@ -75,6 +79,11 @@ const noteMore = ({ note }: Props) => {
             <IconTrash className="size-5 text-dislike" />
             Delete Note</DropdownMenuItem>
     </DropdownMenuContent>
+    <Dialog open={openRename} onOpenChange={setOpenRename}>
+      <DialogContent className="p-0 border-none bg-transparent shadow-none">
+        <RenameNote note={note} open={openRename} onOpenChange={setOpenRename} />
+      </DialogContent>
+    </Dialog>
     </DropdownMenu>
   )
 }

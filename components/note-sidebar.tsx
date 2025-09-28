@@ -7,6 +7,9 @@ import { useSidebar } from "@/components/ui/sidebar"
 import { useNotes } from "@/hooks/use-notes"
 import { IconDotsVertical, IconFolder, IconChevronsLeft } from "@tabler/icons-react"
 import { Button } from "./ui/button"
+import NoteFilter from "./note-filter"
+import NotesList from "./ui/notes-list"
+import SearchNote from "./search-note"
 
 export function NoteSidebar() {
   const { open, width, toggle } = useNoteSidebar()
@@ -29,31 +32,23 @@ export function NoteSidebar() {
       <div className="flex h-full flex-col">
         <div className="px-5 py-4 flex items-center gap-4 justify-between">
           
-          <h2 className="text-foreground text-base font-semibold">Notes</h2>
+          <NoteFilter />
           <Button variant="ghost" size="icon" onClick={toggle}>
             <IconChevronsLeft className="size-5 text-accent-foreground/60" />
           </Button>
         </div>
-        <div className="flex-1 overflow-y-auto p-3 space-y-2">
-          {(notes || []).map((n) => (
-            <div key={n.id} className="rounded-md px-3 py-2 hover:bg-sidebar cursor-pointer flex items-center gap-3">
-              <div className="flex-1 min-w-0">
-                <div className="truncate text-[15px] font-medium">{n.title || 'Untitled note'}</div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span className="inline-flex items-center gap-1">
-                    <IconFolder className="!size-3 text-red-500" />
-                    <span className="leading-none">{n.folder || 'No Folder'}</span>
-                  </span>
-                </div>
-              </div>
-              <div className="shrink-0">
-                <Button variant="ghost" size="icon">
-                  <IconDotsVertical className="size-4" />
-                </Button>
-              </div>
-            </div>
-          ))}
+
+        <div className="px-4">
+            <SearchNote />
         </div>
+        <div className="flex-1 overflow-y-auto p-3 ">
+          
+          <div>
+            <NotesList />
+        </div>
+        </div>
+
+        
       </div>
     </div>
   )

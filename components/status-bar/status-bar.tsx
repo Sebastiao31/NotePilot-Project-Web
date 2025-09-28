@@ -12,11 +12,9 @@ const StatusBar = ({ note }: StatusBarProps) => {
   return (
     <main>
         <div className='flex items-center gap-2'>
-            <AssignedFolder />
-            <IconPointFilled className="size-3"/>
+            <AssignedFolder note={note} />
+            <IconPointFilled className="size-3 text-muted-foreground"/>
             <DataInfo note={note} />
-            <IconPointFilled className="size-3"/>
-            <HourInfo />    
         </div>
     </main>
   )

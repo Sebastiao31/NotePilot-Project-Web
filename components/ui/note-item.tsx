@@ -33,27 +33,34 @@ export default function NoteItem({ note }: Props) {
   }
 
   return (
-    <div className="group block hover:bg-accent/30 cursor-pointer" onClick={handleOpen}>
-      <div className="px-4 py-4 lg:px-6">
+    <div className="group block hover:bg-sidebar cursor-pointer rounded-md mb-2" onClick={handleOpen}>
+      <div className="pl-3 pr-2 py-3">
         <div className="flex items-center gap-3 text-muted-foreground text-sm">
 
-          <div>
-            <StatusBar note={note} />
+          <div className="truncate gap-2 flex flex-col">
+
+            <div className=" text-[16px] truncate font-semibold text-foreground">
+            {note.status === 'generating' ? 'Generating summary…' :  note.title}
+            </div>
+
+            <div>
+              <StatusBar note={note} />
+            </div>
+
           </div>
+          
+
+          
 
 
         
           <div className="ml-auto">
-            <NoteMore />
+            <NoteMore note={note} />
           </div>
+
         </div>
 
-        <div className="mt-2 text-lg font-semibold text-foreground">
-          {note.title || 'Untitled note'}
-        </div>
-        <p className="mt-2 text-md text-muted-foreground">
-          {note.status === 'generating' ? 'Generating summary…' : (note.overview || note.note).slice(0, 380) + ((note.overview || note.note).length > 180 ? '…' : '')}
-        </p>
+        
       </div>
     </div>
   )

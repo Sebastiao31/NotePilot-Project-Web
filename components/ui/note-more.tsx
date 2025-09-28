@@ -19,6 +19,7 @@ import { doc, updateDoc } from "firebase/firestore"
 import { getFirebase } from "@/lib/firebase"
 import { Dialog, DialogContent, DialogTrigger } from "./dialog"
 import RenameNote from "../modals/rename-note"
+import DeleteNoteAlert from "../modals/delete-note-alert"
 
 type Props = { note: NoteDoc }
 
@@ -26,6 +27,7 @@ const noteMore = ({ note }: Props) => {
   const { folders, loading } = useFolders()
   const { db } = getFirebase()
   const [openRename, setOpenRename] = React.useState(false)
+  const [openDelete, setOpenDelete] = React.useState(false)
 
   const moveToFolder = async (folderName: string | null) => {
     try {
@@ -75,7 +77,7 @@ const noteMore = ({ note }: Props) => {
             </DropdownMenuPortal>
           </DropdownMenuSub>
           <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive">
+        <DropdownMenuItem variant="destructive" onSelect={() => setOpenDelete(true)}>
             <IconTrash className="size-5 text-dislike" />
             Delete Note</DropdownMenuItem>
     </DropdownMenuContent>
@@ -84,6 +86,7 @@ const noteMore = ({ note }: Props) => {
         <RenameNote note={note} open={openRename} onOpenChange={setOpenRename} />
       </DialogContent>
     </Dialog>
+    <DeleteNoteAlert note={note} open={openDelete} onOpenChange={setOpenDelete} />
     </DropdownMenu>
   )
 }

@@ -39,8 +39,7 @@ const RenameNote: React.FC<Props> = ({ note, open, onOpenChange }) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Rename note</DialogTitle>
-          <DialogDescription>Rename the note title to something more memorable to you.</DialogDescription>
+          <DialogTitle className='text-xl font-semibold'>Rename note</DialogTitle>
         </DialogHeader>
         <div className='py-4'>
           <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder='Note title' autoFocus />

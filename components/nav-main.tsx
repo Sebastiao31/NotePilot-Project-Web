@@ -1,6 +1,6 @@
 "use client"
 
-import { IconCirclePlusFilled, IconLibraryPlus, IconMail, IconMicrophone, type Icon } from "@tabler/icons-react"
+import { IconCirclePlusFilled, IconFiles, IconLibraryPlus, IconMail, IconMicrophone, type Icon } from "@tabler/icons-react"
 import { usePathname } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
@@ -21,6 +21,7 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar"
 import MoreOptions from "@/components/modals/more-options"
+import { useNoteSidebar } from "./note-provider"
 
 export function NavMain({
   items,
@@ -32,6 +33,7 @@ export function NavMain({
   }[]
 }) {
   const pathname = usePathname()
+  const { toggle: toggleNoteSidebar } = useNoteSidebar()
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -75,12 +77,19 @@ export function NavMain({
               pathname === item.url || pathname.startsWith(item.url + "/")
             return (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton tooltip={item.title} variant="ghost" isActive={isActive} asChild>
-                  <a href={item.url}>
-                    {item.icon && <item.icon className="!size-5"/>}
+                {item.title === 'Notes' ? (
+                  <SidebarMenuButton tooltip={item.title} variant="ghost" onClick={toggleNoteSidebar}>
+                    {IconFiles && <IconFiles className="!size-5"/>}
                     <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton>
+                  </SidebarMenuButton>
+                ) : (
+                  <SidebarMenuButton tooltip={item.title} variant="ghost" isActive={isActive} asChild>
+                    <a href={item.url}>
+                      {item.icon && <item.icon className="!size-5"/>}
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                )}
               </SidebarMenuItem>
             )
           })}

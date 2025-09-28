@@ -6,9 +6,10 @@ import { useFolders } from '@/hooks/use-folders'
 type Props = { note?: NoteDoc }
 
 const AssignedFolder = ({ note }: Props) => {
-  const label = note?.folder ? note.folder : 'No folder'
   const { folders } = useFolders()
-  const color = note?.folder ? (folders.find((f) => f.name === note.folder)?.color ?? undefined) : undefined
+  const found = note?.folder ? folders.find((f) => f.name === note.folder) : undefined
+  const label = found ? found.name : 'No folder'
+  const color = found?.color
   return (
     <main>
         <div className='flex items-end  gap-2'>

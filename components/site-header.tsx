@@ -43,7 +43,7 @@ export function SiteHeader() {
         />
           
         
-        <h1 className="text-md font-semibold text-primary">Home</h1>
+        <h1 className="text-md font-semibold text-primary">Note</h1>
 
 
 
@@ -66,9 +66,7 @@ export function SiteHeader() {
                 Share/Export
               </Button>
             </div>
-            <div>
-              <NoteTrigger />
-            </div>
+            
             <div>
               <ChatTrigger />
             </div>

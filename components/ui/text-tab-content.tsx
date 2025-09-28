@@ -24,7 +24,7 @@ const TextTabContent = () => {
       const placeholder = {
         userId: authUser.uid,
         title: clean.slice(0, 80) || 'New Note',
-        note: 'Generating summary…',
+        note: '',
         transcript: clean,
         date: serverTimestamp(),
         folder: folderId ?? null,

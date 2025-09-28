@@ -27,7 +27,7 @@ const WebsiteTabContent = () => {
       const placeholder = {
         userId: authUser.uid,
         title: 'Website note',
-        note: 'Generating summary…',
+        note: '',
         transcript: `Source: ${clean}`,
         source: clean,
         date: serverTimestamp(),

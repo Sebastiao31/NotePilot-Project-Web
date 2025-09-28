@@ -45,7 +45,7 @@ const RenameNote: React.FC<Props> = ({ note, open, onOpenChange }) => {
           <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder='Note title' autoFocus />
         </div>
         <DialogFooter>
-          <Button variant='ghost' onClick={() => onOpenChange(false)} disabled={saving}>Cancel</Button>
+          <Button variant='outline' onClick={() => onOpenChange(false)} disabled={saving}>Cancel</Button>
           <Button onClick={onSave} disabled={saving || title.trim().length === 0}>{saving ? 'Saving…' : 'Save'}</Button>
         </DialogFooter>
       </DialogContent>

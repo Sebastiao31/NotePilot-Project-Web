@@ -31,7 +31,7 @@ const noteFilter = () => {
             setSelectedFolder(folder ? folder.name : null)
           }
         }} >
-          <SelectTrigger className='bg-background-primary border-none -ml-1 font-semibold max-w-[180px] sm:max-w-[220px] truncate'>
+          <SelectTrigger className='bg-background-primary border-none -ml-1 font-semibold max-w-[180px] sm:max-w-[220px] truncate dark:bg-background-primary'>
             <SelectValue placeholder='Select a folder' />
           </SelectTrigger>
           <SelectContent>

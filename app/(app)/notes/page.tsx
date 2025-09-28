@@ -1,33 +1,52 @@
-import React from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import NoteFilter from '@/components/note-filter'
-import SearchNote from '@/components/search-note'
-import NotesList from '@/components/ui/notes-list'
+"use client"
 
+import React from 'react'
+import { useRouter } from 'next/navigation'
+import { useNotes } from '@/hooks/use-notes'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
+import MoreOptions from '@/components/modals/more-options'
+import { IconPlus } from '@tabler/icons-react'
 
 const NotesPage = () => {
-  return (
-    <main>
-      <div className='mb-8'>
-        <h1 className='text-2xl font-semibold'>My Notes</h1>
-      </div>
+  const router = useRouter()
+  const { notes, loading } = useNotes()
+  const [open, setOpen] = React.useState(false)
 
-      <div className='flex items-center justify-between'>
-        <div>
-          <NoteFilter />
-        </div>
-        <div>
-          <SearchNote />
-        </div>
-        
-      </div>
+  React.useEffect(() => {
+    if (loading) return
+    const items = notes ?? []
+    if (items.length > 0) {
+      router.replace(`/notes/${items[0].id}`)
+    }
+  }, [loading, notes, router])
 
-      <div>
-        <NotesList />
+  if (loading) return null
+
+  const items = notes ?? []
+  if (items.length === 0) {
+    return (
+      <div className="flex items-center mt-24 justify-center py-24">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold mb-4">Well this is awkward...</h2>
+          <p className="text-muted-foreground">It looks like you don't have any notes yet. <br /> Start by creating one now!</p>
+          <div className='mt-8'>
+            <Button className="gap-2" onClick={() => setOpen(true)}>
+              <IconPlus className="size-5" />
+              Create note
+            </Button>
+          </div>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent>
+              <MoreOptions />
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
-     
-    </main>
-  )
+    )
+  }
+
+  return null
 }
 
 export default NotesPage

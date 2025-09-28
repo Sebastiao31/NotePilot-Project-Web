@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
-import { useRouter } from 'next/navigation'
-import { IconDotsVertical, IconFolder } from '@tabler/icons-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { IconDotsVertical, IconFolder, IconLoader2 } from '@tabler/icons-react'
 import type { NoteDoc } from '@/hooks/use-notes'
 import StatusBar from '../status-bar/status-bar'
 import NoteMore from './note-more'
@@ -23,6 +23,7 @@ type Props = { note: NoteDoc }
 
 export default function NoteItem({ note }: Props) {
   const router = useRouter()
+  const pathname = usePathname()
   const dateLabel = formatDate(note.date)
   const handleOpen = () => {
     router.push(`/notes/${note.id}`)
@@ -32,15 +33,22 @@ export default function NoteItem({ note }: Props) {
     e.preventDefault()
   }
 
+  const isActive = pathname === `/notes/${note.id}`
+
   return (
-    <div className="group block hover:bg-sidebar cursor-pointer rounded-md mb-2" onClick={handleOpen}>
+    <div className={"group block cursor-pointer rounded-md mb-2 " + (isActive ? "bg-sidebar" : "hover:bg-sidebar")} onClick={handleOpen}>
       <div className="pl-3 pr-2 py-3">
         <div className="flex items-center gap-3 text-muted-foreground text-sm">
 
           <div className="truncate gap-2 flex flex-col">
 
-            <div className=" text-[16px] truncate font-semibold text-foreground">
-            {note.status === 'generating' ? 'Generating summary…' :  note.title}
+            <div className={" text-[16px] truncate font-semibold " + (isActive ? "text-foreground" : "text-foreground") }>
+            {note.status === 'generating' ? (
+              <span className="inline-flex items-center gap-2">
+                <IconLoader2 className="size-4 animate-spin" />
+                <span>Generating note…</span>
+              </span>
+            ) :  note.title}
             </div>
 
             <div>

@@ -10,6 +10,7 @@ export type NoteDoc = {
   userId: string
   title: string
   note: string
+  overview?: string
   transcript: string
   date: any
   folder: string | null
@@ -45,6 +46,7 @@ export function useNotes() {
           userId: data.userId,
           title: data.title ?? '',
           note: data.note ?? '',
+          overview: data.overview ?? '',
           transcript: data.transcript ?? '',
           date: data.date,
           folder: data.folder ?? null,

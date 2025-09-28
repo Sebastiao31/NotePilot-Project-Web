@@ -36,6 +36,7 @@ export default function Quiz({ noteId, quizId, open, onOpenChange }: Props) {
     'Formatting quiz',
   ], [])
   const [phraseIdx, setPhraseIdx] = React.useState(0)
+  const [hasLoadedExisting, setHasLoadedExisting] = React.useState(false)
 
   // Fix common JSON-escape losses for LaTeX commands (e.g., \t -> tab, \f -> form feed)
   const fixLatexEscapes = React.useCallback((s: string) => {
@@ -103,31 +104,32 @@ export default function Quiz({ noteId, quizId, open, onOpenChange }: Props) {
     run()
   }, [open, noteId, title, content, quizId])
 
-  // If an existing quizId is provided, load it instead of generating
+  // If an existing quizId is provided, subscribe to it instead of generating
   React.useEffect(() => {
-    const loadExisting = async () => {
-      if (!open || !noteId || !quizId) return
-      setLoading(true)
-      try {
-        const qsSnap = await (await import('firebase/firestore')).getDocs(
-          (await import('firebase/firestore')).collection(db, 'notes', noteId, 'quizzes', quizId, 'questions')
-        )
-        const qs: any[] = []
-        qsSnap.forEach((d: any) => qs.push(d.data()))
-        setQuestions(qs)
-        setAnswers(new Array(qs.length).fill(-1))
-        setIdx(0)
-      } catch (e) {
-        console.error('failed to load existing quiz', e)
-        setQuestions([])
-      } finally {
-        setLoading(false)
-      }
-    }
-    loadExisting()
+    if (!open || !noteId || !quizId) return
+    setHasLoadedExisting(false)
+    setLoading(true)
+    const ref = collection(db, 'notes', noteId, 'quizzes', quizId, 'questions')
+    const unsub = onSnapshot(ref, (snap: any) => {
+      const qs: any[] = []
+      snap.forEach((d: any) => qs.push(d.data()))
+      setQuestions(qs)
+      setAnswers(new Array(qs.length).fill(-1))
+      setIdx(0)
+      setHasLoadedExisting(true)
+      setLoading(false)
+    }, (e: any) => {
+      console.error('failed to subscribe existing quiz', e)
+      setQuestions([])
+      setHasLoadedExisting(true)
+      setLoading(false)
+    })
+    return () => unsub()
   }, [open, noteId, quizId, db])
 
   const current = questions && questions[idx]
+  const isLoading = loading || questions === null || (!!quizId && !hasLoadedExisting)
+  const isEmpty = Array.isArray(questions) && questions.length === 0
 
   return (
     <Dialog
@@ -156,13 +158,13 @@ export default function Quiz({ noteId, quizId, open, onOpenChange }: Props) {
             )}
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div className='flex items-center gap-3 py-6'>
             <IconLoader2 className='size-5 animate-spin' />
             <div className='text-sm text-muted-foreground'>{phrases[phraseIdx]}…</div>
           </div>
-        ) : !current ? (
-          <div className='text-sm text-muted-foreground'>Something went wrong. Try again.</div>
+        ) : isEmpty ? (
+          <div className='text-sm text-muted-foreground'>No questions were generated. Try again.</div>
         ) : (
           <div className='space-y-4'>
             <div className='font-medium text-lg flex gap-2 items-start'>
@@ -173,15 +175,15 @@ export default function Quiz({ noteId, quizId, open, onOpenChange }: Props) {
                   rehypePlugins={[rehypeKatex]}
                   components={{ p: (props: any) => <span {...props} /> }}
                 >
-                  {fixLatexEscapes(current.q)}
+                  {fixLatexEscapes((questions as QuizQuestion[])[idx]?.q || '')}
                 </ReactMarkdown>
               </div>
             </div>
             <div className='grid gap-2 my-12'>
-              {current.options?.map((opt: string, i: number) => {
+              {(questions as QuizQuestion[])[idx]?.options?.map((opt: string, i: number) => {
                 const selected = answers[idx]
                 const answered = selected !== -1
-                const isCorrect = i === current.correct
+                const isCorrect = i === (questions as QuizQuestion[])[idx]?.correct
                 const isSelected = i === selected
                 const variant = !answered ? 'outline' : isCorrect ? 'correct' : isSelected ? 'incorrect' : 'outline'
                 return (

@@ -5,9 +5,20 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar"
 import CreateFolder from "./create-folder"
 import ChatTrigger from "./chat-trigger"
+import NoteTrigger from "./note-trigger"
 import { usePathname } from "next/navigation"
 import * as React from "react"
 import { useChatSidebar } from "./chat-provider"
+
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import TranscriptSheet from "./ui/transcript-sheet"
 
 export function SiteHeader() {
   const { state } = useSidebar()
@@ -39,14 +50,24 @@ export function SiteHeader() {
         {showNoteActions && (
           <div className="items-end ml-auto flex gap-2">
             <div>
-              <Button variant="ghost">
-                Transcript
-              </Button>
+              
+
+              <Sheet>
+                <SheetTrigger>
+                  <Button variant="ghost">
+                    Transcript
+                  </Button>
+                </SheetTrigger>
+                  <TranscriptSheet />
+            </Sheet>
             </div>
             <div>
               <Button variant="ghost">
                 Share/Export
               </Button>
+            </div>
+            <div>
+              <NoteTrigger />
             </div>
             <div>
               <ChatTrigger />

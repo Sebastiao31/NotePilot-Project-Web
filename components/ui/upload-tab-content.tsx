@@ -4,6 +4,9 @@ import SelectFolder from '@/components/ui/select-folder'
 import { Button } from './button'
 
 const UploadTabContent = () => {
+  const [folderId, setFolderId] = React.useState<string | undefined>(undefined)
+  const [loading, setLoading] = React.useState(false)
+  
   return (
     <main className='flex flex-col space-y-8 mt-8'>
         <div className='flex flex-col gap-2'>
@@ -12,7 +15,7 @@ const UploadTabContent = () => {
         </div>
 
         <div>
-            <SelectFolder />
+            <SelectFolder value={folderId} onChange={setFolderId} disabled={loading} />
         </div>
 
         <div>

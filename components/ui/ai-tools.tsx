@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { IconCards, IconCirclePlus, IconLanguage, IconMicrophone2, IconRefresh, IconSitemap, IconTestPipe } from "@tabler/icons-react"
 import Quiz from "@/components/modals/quiz"
+import FlashcardsModal from "@/components/modals/flashcards"
 import { useParams } from "next/navigation"
 import { getFirebase } from "@/lib/firebase"
 import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore"
@@ -27,10 +28,13 @@ const AiTools = () => {
   const noteId = Array.isArray(params?.id) ? params.id[0] : (params?.id as string | undefined)
   const [openQuiz, setOpenQuiz] = React.useState(false)
   const [existingQuizId, setExistingQuizId] = React.useState<string | null>(null)
+  const [openFlash, setOpenFlash] = React.useState(false)
+  const [existingFlashId, setExistingFlashId] = React.useState<string | null>(null)
 
   React.useEffect(() => {
     if (!noteId) {
       setExistingQuizId(null)
+      setExistingFlashId(null)
       return
     }
     const { db } = getFirebase()
@@ -39,7 +43,12 @@ const AiTools = () => {
       const first = snap.docs[0]
       setExistingQuizId(first ? first.id : null)
     })
-    return () => unsub()
+    const q2 = query(collection(db, 'notes', noteId, 'flashcardSets'), orderBy('createdAt', 'desc'), limit(1))
+    const unsub2 = onSnapshot(q2, (snap) => {
+      const first = snap.docs[0]
+      setExistingFlashId(first ? first.id : null)
+    })
+    return () => { unsub(); unsub2(); }
   }, [noteId])
   return (
     <DropdownMenu>
@@ -55,9 +64,9 @@ const AiTools = () => {
             <IconTestPipe className="size-5 text-accent-foreground " />
             {existingQuizId ? 'Take Quiz' : 'Create Quiz'}
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setOpenFlash(true)} disabled={!noteId}>
             <IconCards className="size-5 text-accent-foreground " />
-            Create Flashcards
+            {existingFlashId ? 'Open Flashcards' : 'Create Flashcards'}
           </DropdownMenuItem>
           <DropdownMenuItem>
             <IconSitemap className="size-5 text-accent-foreground " />
@@ -107,6 +116,9 @@ const AiTools = () => {
       </DropdownMenuContent>
       {noteId && (
         <Quiz noteId={noteId} quizId={existingQuizId} open={openQuiz} onOpenChange={setOpenQuiz} />
+      )}
+      {noteId && (
+        <FlashcardsModal noteId={noteId} setId={existingFlashId} open={openFlash} onOpenChange={setOpenFlash} />
       )}
     </DropdownMenu>
   )

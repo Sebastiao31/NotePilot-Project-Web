@@ -41,9 +41,9 @@ export const SUMMARIZE_PROMPT: SummarizePromptConfig = {
   
   ### What to produce
   - A brief opening paragraph (3–5 sentences) describing the topic and outcome
-  - 2–5 additional topical sections with bullets/steps as needed
-  - Optional: a comparison table or checklist if the source suggests it
-  - Optional: callouts (TIP/INFO/WARNING) where they add value
+  - The necessary additional topical sections with bullets/steps or paragraphs as needed
+  - A comparison table or checklist if the source suggests it if it seems fit
+  - Callouts (TIP/INFO/WARNING) where they add value if it seems fit
   `,
     userTemplate:
       "Summarize the following content following the system instructions written in the language of the source content and output format.\n\n---\n{text}\n---",

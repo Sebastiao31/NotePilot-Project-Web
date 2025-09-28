@@ -27,6 +27,12 @@ export async function POST(req: NextRequest) {
       temperature: 0.3,
     })
     const summary = summaryResp.choices[0]?.message?.content?.trim() || ''
+    // Extract overview: first 3-5 sentences from summary
+    const sentences = summary
+      .replace(/\n+/g, ' ')
+      .split(/(?<=[.!?])\s+/)
+      .filter(Boolean)
+    const overview = sentences.slice(0, 5).join(' ')
 
     // Title
     const titleResp = await client.chat.completions.create({
@@ -40,7 +46,7 @@ export async function POST(req: NextRequest) {
     })
     const title = titleResp.choices[0]?.message?.content?.trim() || ''
 
-    return new Response(JSON.stringify({ summary, title }), { status: 200 })
+    return new Response(JSON.stringify({ summary, title, overview }), { status: 200 })
   } catch (err: any) {
     console.error('Summarize API error', err)
     return new Response(JSON.stringify({ error: 'Failed to summarize text' }), { status: 500 })

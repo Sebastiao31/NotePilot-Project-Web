@@ -44,9 +44,19 @@ const TextTabContent = () => {
       const summary: string = data.summary || ''
       const title: string = (data.title || '').slice(0, 80)
 
+      // Generate plain-text overview from original input (not markdown summary)
+      const overRes = await fetch('/api/notes/overview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: clean })
+      })
+      const overData = await overRes.json()
+      const overview: string = overData.overview || ''
+
       await updateDoc(doc(db, 'notes', ref.id), {
         note: summary,
         title: title || placeholder.title,
+        overview: overview,
         status: 'ready',
         // keep satisfied as null until the user reacts
       })

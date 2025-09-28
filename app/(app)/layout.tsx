@@ -2,6 +2,9 @@ import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
 import { ChatProvider } from "@/components/chat-provider"
 import { ChatSidebar } from "@/components/chat-sidebar"
+import { NoteProvider } from "@/components/note-provider"
+import { NoteSidebar } from "@/components/note-sidebar"
+import { NoteInset } from "@/components/note-inset"
 import { ChatInset } from "@/components/chat-inset"
 import {
   SidebarInset,
@@ -20,16 +23,21 @@ const layout = ({children}: {children: React.ReactNode}) => {
       }
     >
       <ChatProvider>
+        <NoteProvider>
         <AuthGuard>
           <AppSidebar />
           <SidebarInset>
-            <ChatInset>
+            <NoteInset>
+              <ChatInset>
               <SiteHeader />
               {children}
-            </ChatInset>
+              </ChatInset>
+            </NoteInset>
           </SidebarInset>
+          <NoteSidebar />
           <ChatSidebar />
         </AuthGuard>
+        </NoteProvider>
       </ChatProvider>
     </SidebarProvider>
   )

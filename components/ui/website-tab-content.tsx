@@ -29,6 +29,7 @@ const WebsiteTabContent = () => {
         title: 'Website note',
         note: 'Generating summary…',
         transcript: `Source: ${clean}`,
+        source: clean,
         date: serverTimestamp(),
         folder: folderId ?? null,
         satisfied: null,
@@ -48,10 +49,21 @@ const WebsiteTabContent = () => {
       const title: string = (data.title || '').slice(0, 80)
       const transcript: string = data.transcript || ''
 
+      // Generate plain-text overview from raw transcript (not markdown summary)
+      const overRes = await fetch('/api/notes/overview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: transcript })
+      })
+      const overData = await overRes.json()
+      const overview: string = overData.overview || ''
+
       await updateDoc(doc(db, 'notes', ref.id), {
         note: summary,
         title: title || placeholder.title,
         transcript: transcript,
+        source: clean,
+        overview: overview,
         status: 'ready',
       })
 

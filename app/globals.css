@@ -59,6 +59,15 @@
   --color-correct-bg: var(--correct-bg);
   --color-incorrect-border: var(--incorrect-border);
   --color-incorrect-bg: var(--incorrect-bg);
+  /* Flashcard colors */
+  --color-flash-1-bg: var(--flash-1-bg);
+  --color-flash-1-border: var(--flash-1-border);
+  --color-flash-2-bg: var(--flash-2-bg);
+  --color-flash-2-border: var(--flash-2-border);
+  --color-flash-3-bg: var(--flash-3-bg);
+  --color-flash-3-border: var(--flash-3-border);
+  --color-flash-4-bg: var(--flash-4-bg);
+  --color-flash-4-border: var(--flash-4-border);
 }
 
 :root {
@@ -125,6 +134,15 @@
   --correct-bg: hsl(134, 71%, 93%);
   --incorrect-border: hsl(1, 82%, 65%);
   --incorrect-bg: hsl(45, 15%, 95%);
+  /* Flashcard (light) */
+  --flash-1-bg: hsl(210 100% 97%);
+  --flash-1-border: hsl(210 65% 70%);
+  --flash-2-bg: hsl(151 81% 96%);
+  --flash-2-border: hsl(151 55% 60%);
+  --flash-3-bg: hsl(40 100% 96%);
+  --flash-3-border: hsl(40 85% 70%);
+  --flash-4-bg: hsl(290 100% 96%);
+  --flash-4-border: hsl(290 55% 70%);
 }
 
 .dark {
@@ -190,6 +208,15 @@
   --correct-bg: hsl(134, 18%, 14%);
   --incorrect-border: hsl(5, 65%, 62%);
   --incorrect-bg: hsl(4, 19%, 16%);
+  /* Flashcard (dark) */
+  --flash-1-bg: hsl(210 40% 16%);
+  --flash-1-border: hsl(210 55% 42%);
+  --flash-2-bg: hsl(151 35% 14%);
+  --flash-2-border: hsl(151 50% 36%);
+  --flash-3-bg: hsl(40 45% 16%);
+  --flash-3-border: hsl(40 65% 42%);
+  --flash-4-bg: hsl(290 35% 16%);
+  --flash-4-border: hsl(290 55% 40%);
 }
 
 @layer base {

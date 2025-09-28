@@ -42,6 +42,11 @@ export async function POST(req: NextRequest) {
       temperature: 0.3,
     })
     const summary = summaryResp.choices[0]?.message?.content?.trim() || ''
+    const sentences = summary
+      .replace(/\n+/g, ' ')
+      .split(/(?<=[.!?])\s+/)
+      .filter(Boolean)
+    const overview = sentences.slice(0, 5).join(' ')
 
     const titleResp = await client.chat.completions.create({
       model: 'gpt-4o-mini',
@@ -54,7 +59,7 @@ export async function POST(req: NextRequest) {
     })
     const title = titleResp.choices[0]?.message?.content?.trim() || ''
 
-    return new Response(JSON.stringify({ summary, title, transcript: text }), { status: 200 })
+    return new Response(JSON.stringify({ summary, title, overview, transcript: text }), { status: 200 })
   } catch (err) {
     console.error('Website summarize API error', err)
     return new Response(JSON.stringify({ error: 'Failed to summarize website' }), { status: 500 })

@@ -9,6 +9,7 @@ import { useEditorBridge } from "@/components/editor-bridge"
 import Texts from "./textTools/texts"
 import Lists from "./textTools/lists"
 import Codeblock from "./textTools/codeblock"
+import Blockquote from "./textTools/blockquote"
 
 export default function Toolbar() {
   const pathname = usePathname()
@@ -50,6 +51,7 @@ export default function Toolbar() {
           <Texts />
           <Lists />
           <Codeblock />
+          <Blockquote />
           <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
           <Button size="sm" variant="outline" disabled={!canUndo} onClick={() => editor?.chain().focus().undo().run()}>Undo</Button>
           <Button size="sm" variant="outline" disabled={!canRedo} onClick={() => editor?.chain().focus().redo().run()}>Redo</Button>

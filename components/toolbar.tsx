@@ -13,6 +13,7 @@ import Blockquote from "./textTools/blockquote"
 import Bold from "./textTools/bold"
 import Italic from "./textTools/italic"
 import Strike from "./textTools/strike"
+import Underline from "./textTools/underline"
 
 export default function Toolbar() {
   const pathname = usePathname()
@@ -59,6 +60,7 @@ export default function Toolbar() {
           <Bold />
           <Italic />
           <Strike />
+          <Underline />
           
           <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
         </div>

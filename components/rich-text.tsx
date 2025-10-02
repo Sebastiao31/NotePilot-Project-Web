@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useEditorBridge } from "./editor-bridge";
+import BubbleMenuFloating from "./textTools/bubble-menu";
 
 const Tiptap = () => {
   const { setEditor } = useEditorBridge()
@@ -90,7 +91,10 @@ const Tiptap = () => {
               <IconListNumbers />
             </button>
           </div>
-          <EditorContent editor={editor} className="tiptap border rounded-lg p-2" />
+          <div className="relative">
+            <BubbleMenuFloating />
+            <EditorContent editor={editor} className="tiptap border rounded-lg p-2" />
+          </div>
           
         </div>
       </div>

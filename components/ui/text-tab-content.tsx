@@ -50,6 +50,7 @@ const TextTabContent = () => {
       if (!res.ok) throw new Error('Summarization failed')
       const data = await res.json()
       const summary: string = data.summary || ''
+      const docJson = data.doc || null
       const title: string = (data.title || '').slice(0, 80)
 
       // Generate plain-text overview from original input (not markdown summary)
@@ -63,6 +64,7 @@ const TextTabContent = () => {
 
       await updateDoc(doc(db, 'notes', ref.id), {
         note: summary,
+        noteDoc: docJson ? JSON.stringify(docJson) : null,
         title: title || placeholder.title,
         overview: overview,
         status: 'ready',

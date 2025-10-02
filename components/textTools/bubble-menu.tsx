@@ -4,11 +4,12 @@ import React from "react"
  import { BubbleMenu } from '@tiptap/react/menus'
 import { useEditorBridge } from "../editor-bridge"
 import { Button } from "../ui/button"
-import { IconBold, IconItalic, IconUnderline, IconStrikethrough, IconCode } from "@tabler/icons-react"
- import Texts from "./texts"
- import Lists from "./lists"
- import Background from "./background"
- import { Separator } from "../ui/separator"
+import { IconBold, IconItalic, IconUnderline, IconStrikethrough } from "@tabler/icons-react"
+import Texts from "./texts"
+import Lists from "./lists"
+import Background from "./background"
+import { Separator } from "../ui/separator"
+import TableTool from "./table"
 
 const BubbleMenuFloating = () => {
   const { editor } = useEditorBridge()
@@ -17,7 +18,9 @@ const BubbleMenuFloating = () => {
   return (
     <BubbleMenu editor={editor} pluginKey="bubble-menu-formatting">
       <div className="flex items-center gap-2 rounded-lg border bg-popover px-2 py-1 shadow-md">
-        
+        <Texts />
+        <Lists />
+        <Separator orientation="vertical" className="data-[orientation=vertical]:h-6" />
         <Button
           size="chat"
           variant={editor.isActive("bold") ? "default" : "ghost"}
@@ -50,6 +53,7 @@ const BubbleMenuFloating = () => {
         >
           <IconStrikethrough className="size-5" />
         </Button>
+        <TableTool />
         <Background />
       </div>
     </BubbleMenu>

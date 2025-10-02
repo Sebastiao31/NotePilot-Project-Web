@@ -16,6 +16,7 @@ const Page = () => {
   const { db } = getFirebase()
   const [title, setTitle] = React.useState<string>('')
   const [content, setContent] = React.useState<string>('')
+  const [noteDoc, setNoteDoc] = React.useState<any | null>(null)
   const [status, setStatus] = React.useState<'generating' | 'ready' | 'error' | undefined>('ready')
   const params = useParams()
   const [open, setOpen] = React.useState(false)
@@ -28,6 +29,12 @@ const Page = () => {
       const data = snap.data() as any
       setTitle(data?.title || '')
       setContent(data?.note || '')
+      try {
+        const raw = data?.noteDoc
+        setNoteDoc(typeof raw === 'string' ? JSON.parse(raw) : raw || null)
+      } catch {
+        setNoteDoc(null)
+      }
       setStatus((data?.status as any) || 'ready')
     })
     return () => unsub()
@@ -37,9 +44,8 @@ const Page = () => {
     <div className='p-6 bg-background-primary h-full'>
 
       <div>
-        <RichText />
+        <RichText initialDoc={noteDoc} fallbackMarkdown={content} />
       </div>
-      <MarkdownViewer content={content || ''} />
 
       {content ? 
       <div>

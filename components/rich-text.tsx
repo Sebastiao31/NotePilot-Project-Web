@@ -4,6 +4,10 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
+import { Table } from "@tiptap/extension-table";
+import TableRow from "@tiptap/extension-table-row";
+import TableHeader from "@tiptap/extension-table-header";
+import TableCell from "@tiptap/extension-table-cell";
 import {
     IconBold,
   IconItalic,
@@ -16,7 +20,9 @@ import { Button } from "./ui/button";
 import { useEditorBridge } from "./editor-bridge";
 import BubbleMenuFloating from "./textTools/bubble-menu";
 
-const Tiptap = () => {
+type Props = { initialDoc?: any | null; fallbackMarkdown?: string }
+
+const Tiptap = ({ initialDoc, fallbackMarkdown }: Props) => {
   const { setEditor } = useEditorBridge()
 
   const editor = useEditor({
@@ -24,8 +30,12 @@ const Tiptap = () => {
       StarterKit,
       Underline,
       Highlight.configure({ multicolor: true }),
+      Table.configure({ resizable: true }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
-    content: "<p>Hello World!</p>",
+    content: initialDoc || "<p></p>",
     editorProps: {
       attributes: {
         class:
@@ -40,6 +50,14 @@ const Tiptap = () => {
     return () => setEditor(null)
   }, [editor, setEditor])
 
+  // Update editor content when a new initialDoc arrives from Firestore
+  useEffect(() => {
+    if (!editor) return
+    if (initialDoc) {
+      editor.commands.setContent(initialDoc)
+    }
+  }, [editor, initialDoc])
+
   if (!editor) {
     return null;
   }
@@ -49,51 +67,10 @@ const Tiptap = () => {
     <>
       <div className="flex flex-col">
         <div className="w-full p-2">
-          <h2>Editor</h2>
-          <div className="flex space-x-2 mb-2">
-            <Button
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              variant="outline"
-              size="icon"
-            >
-              <IconBold />
-            </Button>
-            <button
-              onClick={() => editor.chain().focus().toggleItalic().run()}
-              className={`p-2 ${
-                editor.isActive("italic") ? "bg-gray-300" : ""
-              }`}
-            >
-              <IconItalic />
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleUnderline().run()}
-              className={`p-2 ${
-                editor.isActive("underline") ? "bg-gray-300" : ""
-              }`}
-            >
-              <IconUnderline />
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleBulletList().run()}
-              className={`p-2 ${
-                editor.isActive("bulletList") ? "bg-gray-300" : ""
-              }`}
-            >
-              <IconList />
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleOrderedList().run()}
-              className={`p-2 ${
-                editor.isActive("orderedList") ? "bg-gray-300" : ""
-              }`}
-            >
-              <IconListNumbers />
-            </button>
-          </div>
+          
           <div className="relative">
             <BubbleMenuFloating />
-            <EditorContent editor={editor} className="tiptap border rounded-lg p-2" />
+            <EditorContent editor={editor} className="tiptap" />
           </div>
           
         </div>

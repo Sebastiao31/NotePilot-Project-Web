@@ -54,6 +54,7 @@ const WebsiteTabContent = () => {
       if (!res.ok) throw new Error('Website summarize failed')
       const data = await res.json()
       const summary: string = data.summary || ''
+      const docJson = data.doc || null
       const title: string = (data.title || '').slice(0, 80)
       const transcript: string = data.transcript || ''
 
@@ -68,6 +69,7 @@ const WebsiteTabContent = () => {
 
       await updateDoc(doc(db, 'notes', ref.id), {
         note: summary,
+        noteDoc: docJson ? JSON.stringify(docJson) : null,
         title: title || placeholder.title,
         transcript: transcript,
         source: clean,

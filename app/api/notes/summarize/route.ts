@@ -1,6 +1,11 @@
 import { NextRequest } from 'next/server'
 import OpenAI from 'openai'
 import { SUMMARIZE_PROMPT, TITLE_PROMPT } from '@/constants'
+import { marked } from 'marked'
+import { generateJSON } from '@tiptap/html'
+import StarterKit from '@tiptap/starter-kit'
+import Underline from '@tiptap/extension-underline'
+import Highlight from '@tiptap/extension-highlight'
 
 export async function POST(req: NextRequest) {
   try {
@@ -46,7 +51,15 @@ export async function POST(req: NextRequest) {
     })
     const title = titleResp.choices[0]?.message?.content?.trim() || ''
 
-    return new Response(JSON.stringify({ summary, title, overview }), { status: 200 })
+    // Convert Markdown summary -> HTML -> TipTap JSON (using app schema)
+    const summaryHtml = marked.parse(summary || '') as string
+    const doc = generateJSON(summaryHtml, [
+      StarterKit,
+      Underline,
+      Highlight.configure({ multicolor: true }),
+    ])
+
+    return new Response(JSON.stringify({ summary, title, overview, doc }), { status: 200 })
   } catch (err: any) {
     console.error('Summarize API error', err)
     return new Response(JSON.stringify({ error: 'Failed to summarize text' }), { status: 500 })

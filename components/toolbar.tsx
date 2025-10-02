@@ -16,6 +16,7 @@ import Strike from "./textTools/strike"
 import Underline from "./textTools/underline"
 import HorizontalRule from "./textTools/horizontal-rule"
 import Background from "./textTools/background"
+import TableTool from "./textTools/table"
 
 export default function Toolbar() {
   const pathname = usePathname()
@@ -59,6 +60,7 @@ export default function Toolbar() {
           <Codeblock />
           <Blockquote />
           <HorizontalRule />
+          <TableTool />
           <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
           <Bold />
           <Italic />

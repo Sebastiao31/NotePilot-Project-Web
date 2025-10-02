@@ -17,21 +17,19 @@ export const SUMMARIZE_PROMPT: SummarizePromptConfig = {
   
   ### AI Output Guidelines (Markdown only)
   - Use topical headings (not generic labels). Prefer "What this is", "How it works", "Results", "Limitations", etc.
+  - In the first heading (title) don't use a generic title, like "Overview", "Summary", write a specific title based on the content.
   - Headings: use #, ##, ### for hierarchy (h1/h2/h3).
   - In the h1, try to use words, like "Overview", "Summary" and respected words of the language that the summarie is written in.
   - Prefer short paragraphs and bullet lists, but feel free to use more paragraphs and bullet lists if the content is big and complex and if you think it fits better and is more valuable for the user. Use numbered lists for steps.
   - Emphasize key terms with **bold**; nuance with _italics_; short code with ` + "`code`" + `.
   - Use horizontal rules (---) to split major sections when appropriate.
-  - Callouts using this pattern:
-    > [!TIP] Title\nBody text...
-    > [!INFO] Title\nBody text...
-    > [!WARNING] Title\nBody text...
+  
   - ALWAYS when citing short phrases or quotes like ("Cogito, ergo sum", "Viver sem filosofar é o que se chama ter os olhos fechados sem nunca os haver tentado abrir. - Rene Descartes”) from the source, use Markdown blockquotes (start the line with "> "). 
     "> This is the first line of the quote.
     > This is the second line of the quote.
     > This is the third line of the quote."
   
-  - Checklists when tasks exist: "- [ ] item" or "- [x] item".
+
   - Tables with standard GitHub‑Flavored Markdown for comparisons. Add tables when it makes sense and is valuable for the user.
   - Math: ALWAYS AUTO DETECT math equations. ALWAYS wrap inline equations in \`$...$\` and block/display equations in \`$$...$$\`. Use standard LaTeX math commands (e.g., \`\\frac{...}{...}\`, \`\\cdot\`, superscripts \`^\`, subscripts \`_\`). Example inline: \`$A=\\pi r^2$\`. Example block:
     > $$ blockdisplay equations $$ (detect the best way to display a math equation)
@@ -43,7 +41,7 @@ export const SUMMARIZE_PROMPT: SummarizePromptConfig = {
   - A brief opening paragraph (3–5 sentences) describing the topic and outcome
   - The necessary additional topical sections with bullets/steps or paragraphs as needed
   - A comparison table or checklist if the source suggests it if it seems fit
-  - Callouts (TIP/INFO/WARNING) where they add value if it seems fit
+
   `,
     userTemplate:
       "Summarize the following content following the system instructions written in the language of the source content and output format.\n\n---\n{text}\n---",

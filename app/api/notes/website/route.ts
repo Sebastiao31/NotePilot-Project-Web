@@ -1,5 +1,10 @@
 import { NextRequest } from 'next/server'
 import OpenAI from 'openai'
+import { marked } from 'marked'
+import { generateJSON } from '@tiptap/html'
+import StarterKit from '@tiptap/starter-kit'
+import Underline from '@tiptap/extension-underline'
+import Highlight from '@tiptap/extension-highlight'
 
 export async function POST(req: NextRequest) {
   try {
@@ -59,7 +64,14 @@ export async function POST(req: NextRequest) {
     })
     const title = titleResp.choices[0]?.message?.content?.trim() || ''
 
-    return new Response(JSON.stringify({ summary, title, overview, transcript: text }), { status: 200 })
+    const summaryHtml = marked.parse(summary || '') as string
+    const doc = generateJSON(summaryHtml, [
+      StarterKit,
+      Underline,
+      Highlight.configure({ multicolor: true }),
+    ])
+
+    return new Response(JSON.stringify({ summary, title, overview, transcript: text, doc }), { status: 200 })
   } catch (err) {
     console.error('Website summarize API error', err)
     return new Response(JSON.stringify({ error: 'Failed to summarize website' }), { status: 500 })

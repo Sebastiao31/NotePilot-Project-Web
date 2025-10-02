@@ -265,14 +265,17 @@
   h1 {
     font-size: 2rem;
     font-weight: 700;
+    margin-bottom: 1rem;
   }
   h2 {
     font-size: 1.5rem;
     font-weight: 600;
+    margin-bottom: .7rem;
   }
   h3 {
     font-size: 1.25rem;
     font-weight: 500;
+    margin-bottom: .7rem;
   }
   h4 {
     font-size: 1rem;
@@ -286,9 +289,14 @@
     font-size: 0.75rem;
     font-weight: 200;
   }
+  p{
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
   ul {
     list-style-type: disc;
     margin-left: 1.5rem;
+    margin-bottom: 1rem;
   }
   
   ul li {
@@ -314,6 +322,17 @@
     background-color: var(--muted);
     padding: 0.25rem 0.5rem;
     border-radius: var(--radius-md);
+  }
+
+  table {
+    margin-bottom: 1rem;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+    th, td {
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+    }
   }
 
   /* Editor highlight colors (theme-aware) */

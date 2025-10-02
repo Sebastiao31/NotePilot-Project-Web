@@ -10,6 +10,7 @@ import Texts from "./textTools/texts"
 import Lists from "./textTools/lists"
 import Codeblock from "./textTools/codeblock"
 import Blockquote from "./textTools/blockquote"
+import Bold from "./textTools/bold"
 
 export default function Toolbar() {
   const pathname = usePathname()
@@ -44,19 +45,18 @@ export default function Toolbar() {
         (visible ? "translate-y-0 pointer-events-auto" : "translate-y-full pointer-events-none")
       }
     >
-      <div className="flex w-full items-center gap-2 px-4 lg:gap-2 lg:px-6">
-        <p className="text-sm font-medium text-primary">Edit tools</p>
-        <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
-        <div className="ml-auto flex items-center gap-2">
+      <div className="flex w-full justify-center  items-center gap-2 px-4 lg:gap-2 lg:px-6">
+       
+        <div className="flex items-center gap-2">
+          
           <Texts />
           <Lists />
           <Codeblock />
           <Blockquote />
           <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
-          <Button size="sm" variant="outline" disabled={!canUndo} onClick={() => editor?.chain().focus().undo().run()}>Undo</Button>
-          <Button size="sm" variant="outline" disabled={!canRedo} onClick={() => editor?.chain().focus().redo().run()}>Redo</Button>
+          <Bold />
+          
           <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
-          <Button size="sm" variant="default">Save</Button>
         </div>
       </div>
     </footer>

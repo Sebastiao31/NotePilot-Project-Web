@@ -19,6 +19,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import TranscriptSheet from "./ui/transcript-sheet"
+import Export from "./ui/export"
+import EditModeToogle from "./ui/edit-mode-toogle"
 
 export function SiteHeader() {
   const { state } = useSidebar()
@@ -39,16 +41,24 @@ export function SiteHeader() {
           <SidebarTrigger className="-ml-1 " />
           <Separator
           orientation="vertical"
-          className="mx-2 data-[orientation=vertical]:h-4"
+          className="mx-2 data-[orientation=vertical]:h-6"
         />
           
         
-        <h1 className="text-md font-semibold text-primary">Note</h1>
+        <p className="text-md font-semibold text-primary">Note</p>
 
 
 
         {showNoteActions && (
-          <div className="items-end ml-auto flex gap-2">
+          <div className="items-center ml-auto flex gap-2">
+            <div >
+              <EditModeToogle />
+            </div>
+
+            <Separator
+          orientation="vertical"
+          className=" data-[orientation=vertical]:h-6"
+        />
             <div>
               
 
@@ -62,14 +72,10 @@ export function SiteHeader() {
             </Sheet>
             </div>
             <div>
-              <Button variant="ghost">
-                Share/Export
-              </Button>
+              <Export />
             </div>
             
-            <div>
-              <ChatTrigger />
-            </div>
+            
           </div>
         )}
         

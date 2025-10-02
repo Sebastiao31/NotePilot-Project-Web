@@ -21,6 +21,11 @@ const TextTabContent = () => {
     const clean = text.trim()
     if (!authUser || !clean) return
     setLoading(true)
+    // Close the parent dialog (More Options) once generation starts
+    try {
+      const closeBtn = document.querySelector('[data-slot="dialog-close"]') as HTMLButtonElement | null
+      closeBtn?.click()
+    } catch {}
     const { db } = getFirebase()
     try {
       const selectedFolderName = folders.find((f) => f.id === folderId)?.name ?? null

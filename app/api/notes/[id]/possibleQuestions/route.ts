@@ -6,7 +6,7 @@ You suggest exactly THREE short, helpful questions a user might ask about the pr
 
 Rules:
 - Base suggestions strictly on the provided content.
-- Match the language of the note.
+- ALWAYS Match the language of the note.
 - Keep each question concise (max ~80 characters).
 - Avoid duplicates and generic questions.
 - Output the three questions as plain lines without numbering or extra text.

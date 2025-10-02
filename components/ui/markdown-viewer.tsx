@@ -81,7 +81,7 @@ export default function MarkdownViewer({ content, showTOC=false }: Props) {
           ),
           table: ({node, ...props}) => (
             <div className="my-6 overflow-x-auto">
-              <table className="w-full text-sm border-separate border-spacing-0" {...props} />
+              <table className="w-full text-md border-separate border-spacing-0" {...props} />
             </div>
           ),
           th: ({node, ...props}) => <th className="border border-border px-3 py-2 bg-muted/50 text-left font-medium" {...props} />,

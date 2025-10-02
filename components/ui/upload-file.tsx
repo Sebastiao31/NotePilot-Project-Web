@@ -12,7 +12,10 @@ const uploadFile = () => {
                 <p className='text-sm text-muted-foreground'>PDF, DocX, Mp4, Mp3, TXT and more</p>
             </div>
             <div className="mt-4">
-                <Button>
+                <Button onClick={() => {
+                  const input = document.querySelector('input[type="file"') as HTMLInputElement | null
+                  input?.click()
+                }}>
                     <IconUpload/>
                     Choose File
                 </Button>

@@ -11,6 +11,8 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 import AuthGuard from "@/components/auth-guard"
+import { EditModeProvider } from "@/components/edit-mode-provider"
+import Toolbar from "@/components/toolbar"
 
 const layout = ({children}: {children: React.ReactNode}) => {
   return (
@@ -25,17 +27,20 @@ const layout = ({children}: {children: React.ReactNode}) => {
       <ChatProvider>
         <NoteProvider>
         <AuthGuard>
-          <AppSidebar />
-          <SidebarInset>
-            <NoteInset>
-              <ChatInset>
-              <SiteHeader />
-              {children}
-              </ChatInset>
-            </NoteInset>
-          </SidebarInset>
-          <NoteSidebar />
-          <ChatSidebar />
+          <EditModeProvider>
+            <AppSidebar />
+            <SidebarInset>
+              <NoteInset>
+                <ChatInset>
+                <SiteHeader />
+                {children}
+                <Toolbar />
+                </ChatInset>
+              </NoteInset>
+            </SidebarInset>
+            <NoteSidebar />
+            <ChatSidebar />
+          </EditModeProvider>
         </AuthGuard>
         </NoteProvider>
       </ChatProvider>

@@ -28,7 +28,7 @@ const NotesPage = () => {
     return (
       <div className="flex items-center mt-24 justify-center py-24">
         <div className="text-center">
-          <h2 className="text-2xl font-semibold mb-4">Well this is awkward...</h2>
+          <h2 className="text-2xl font-bold mb-4">This is so empty...</h2>
           <p className="text-muted-foreground">It looks like you don't have any notes yet. <br /> Start by creating one now!</p>
           <div className='mt-8'>
             <Button className="gap-2" onClick={() => setOpen(true)}>

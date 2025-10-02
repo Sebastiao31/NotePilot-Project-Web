@@ -12,6 +12,7 @@ import Codeblock from "./textTools/codeblock"
 import Blockquote from "./textTools/blockquote"
 import Bold from "./textTools/bold"
 import Italic from "./textTools/italic"
+import Strike from "./textTools/strike"
 
 export default function Toolbar() {
   const pathname = usePathname()
@@ -57,6 +58,7 @@ export default function Toolbar() {
           <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
           <Bold />
           <Italic />
+          <Strike />
           
           <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
         </div>

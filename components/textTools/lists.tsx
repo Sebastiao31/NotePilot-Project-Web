@@ -55,7 +55,7 @@ const Lists = () => {
       }}
       disabled={!editor}
     >
-      <SelectTrigger className='bg-background-primary border-none font-semibold max-w-[180px] sm:max-w-[220px] truncate dark:bg-background-primary'>
+      <SelectTrigger className='bg-background-primary border-none px-1.5 font-semibold max-w-[180px] sm:max-w-[220px] truncate dark:bg-background-primary'>
         {renderIcon()}
       </SelectTrigger>
       <SelectContent>

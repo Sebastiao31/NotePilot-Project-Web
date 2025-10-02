@@ -68,6 +68,12 @@
   --color-flash-3-border: var(--flash-3-border);
   --color-flash-4-bg: var(--flash-4-bg);
   --color-flash-4-border: var(--flash-4-border);
+  /* Highlight colors */
+  --color-highlight-yellow: var(--highlight-yellow);
+  --color-highlight-green: var(--highlight-green);
+  --color-highlight-blue: var(--highlight-blue);
+  --color-highlight-pink: var(--highlight-pink);
+  --color-highlight-purple: var(--highlight-purple);
 }
 
 :root {
@@ -143,6 +149,12 @@
   --flash-3-border: hsl(40 85% 70%);
   --flash-4-bg: hsl(290 100% 96%);
   --flash-4-border: hsl(290 55% 70%);
+  /* Highlight palette (light) */
+  --highlight-yellow: hsl(62, 79%, 87%);
+  --highlight-green: hsl(133, 63%, 92%);
+  --highlight-blue: hsl(201, 83%, 93%);
+  --highlight-pink: hsl(357, 74%, 94%);
+  --highlight-purple: hsl(249, 77%, 95%);
 }
 
 .dark {
@@ -217,6 +229,12 @@
   --flash-3-border: hsl(40 65% 42%);
   --flash-4-bg: hsl(290 35% 16%);
   --flash-4-border: hsl(290 55% 40%);
+  /* Highlight palette (dark) */
+  --highlight-yellow: hsl(59, 42%, 30%);
+  --highlight-green: hsl(140, 27%, 47%);
+  --highlight-blue: hsla(201, 26%, 56% );
+  --highlight-pink: hsl(356, 25%, 37% );
+  --highlight-purple: hsl(264, 26%, 38%);
 }
 
 @layer base {
@@ -296,6 +314,45 @@
     background-color: var(--muted);
     padding: 0.25rem 0.5rem;
     border-radius: var(--radius-md);
+  }
+
+  /* Editor highlight colors (theme-aware) */
+  .tiptap mark[data-highlight] {
+    padding: 0.1rem 0.15rem;
+    border-radius: 0.25rem;
+    color: var(--foreground);
+  }
+  .tiptap mark[data-highlight][data-color="#fde68a"] { /* yellow */
+    background-color: var(--highlight-yellow);
+    color: oklch(0.205 0 0);
+  }
+  .dark .tiptap mark[data-highlight][data-color="#fde68a"] {
+    background-color: var(--highlight-yellow);
+    color: oklch(0.985 0 0);
+  }
+  .tiptap mark[data-highlight][data-color="#a7f3d0"] { /* green */
+    background-color: var(--highlight-green);
+    color: oklch(0.205 0 0);
+  }
+  .dark .tiptap mark[data-highlight][data-color="#a7f3d0"] {
+    background-color: var(--highlight-green);
+    color: oklch(0.985 0 0);
+  }
+  .tiptap mark[data-highlight][data-color="#bfdbfe"] { /* blue */
+    background-color: var(--highlight-blue);
+    color: oklch(0.205 0 0);
+  }
+  .dark .tiptap mark[data-highlight][data-color="#bfdbfe"] {
+    background-color: var(--highlight-blue);
+    color: oklch(0.985 0 0);
+  }
+  .tiptap mark[data-highlight][data-color="#fbcfe8"] { /* pink */
+    background-color: var(--highlight-pink);
+    color: oklch(0.205 0 0);
+  }
+  .dark .tiptap mark[data-highlight][data-color="#fbcfe8"] {
+    background-color: var(--highlight-pink);
+    color: oklch(0.985 0 0);
   }
 
   hr {

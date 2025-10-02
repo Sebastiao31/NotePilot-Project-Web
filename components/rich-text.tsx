@@ -3,6 +3,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
+import Highlight from "@tiptap/extension-highlight";
 import {
     IconBold,
   IconItalic,
@@ -18,7 +19,11 @@ const Tiptap = () => {
   const { setEditor } = useEditorBridge()
 
   const editor = useEditor({
-    extensions: [StarterKit, Underline],
+    extensions: [
+      StarterKit,
+      Underline,
+      Highlight.configure({ multicolor: true }),
+    ],
     content: "<p>Hello World!</p>",
     editorProps: {
       attributes: {
@@ -85,7 +90,7 @@ const Tiptap = () => {
               <IconListNumbers />
             </button>
           </div>
-          <EditorContent editor={editor} className="border rounded-lg p-2" />
+          <EditorContent editor={editor} className="tiptap border rounded-lg p-2" />
           
         </div>
       </div>

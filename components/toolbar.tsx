@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator"
 import { useEditMode } from "@/components/edit-mode-provider"
 import { useEditorBridge } from "@/components/editor-bridge"
 import Texts from "./textTools/texts"
+import Lists from "./textTools/lists"
 
 export default function Toolbar() {
   const pathname = usePathname()
@@ -46,6 +47,7 @@ export default function Toolbar() {
         <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
         <div className="ml-auto flex items-center gap-2">
           <Texts />
+          <Lists />
           <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
           <Button size="sm" variant="outline" disabled={!canUndo} onClick={() => editor?.chain().focus().undo().run()}>Undo</Button>
           <Button size="sm" variant="outline" disabled={!canRedo} onClick={() => editor?.chain().focus().redo().run()}>Redo</Button>

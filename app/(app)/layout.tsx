@@ -13,6 +13,7 @@ import {
 import AuthGuard from "@/components/auth-guard"
 import { EditModeProvider } from "@/components/edit-mode-provider"
 import Toolbar from "@/components/toolbar"
+import { EditorBridgeProvider } from "@/components/editor-bridge"
 
 const layout = ({children}: {children: React.ReactNode}) => {
   return (
@@ -28,18 +29,20 @@ const layout = ({children}: {children: React.ReactNode}) => {
         <NoteProvider>
         <AuthGuard>
           <EditModeProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <NoteInset>
-                <ChatInset>
-                <SiteHeader />
-                {children}
-                <Toolbar />
-                </ChatInset>
-              </NoteInset>
-            </SidebarInset>
-            <NoteSidebar />
-            <ChatSidebar />
+            <EditorBridgeProvider>
+              <AppSidebar />
+              <SidebarInset>
+                <NoteInset>
+                  <ChatInset>
+                  <SiteHeader />
+                  {children}
+                  <Toolbar />
+                  </ChatInset>
+                </NoteInset>
+              </SidebarInset>
+              <NoteSidebar />
+              <ChatSidebar />
+            </EditorBridgeProvider>
           </EditModeProvider>
         </AuthGuard>
         </NoteProvider>

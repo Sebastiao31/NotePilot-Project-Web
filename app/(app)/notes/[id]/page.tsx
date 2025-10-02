@@ -37,7 +37,7 @@ const Page = () => {
     <div className='p-6 bg-background-primary h-full'>
 
       <div>
-        <RichText/>
+        <RichText />
       </div>
       <MarkdownViewer content={content || ''} />
 

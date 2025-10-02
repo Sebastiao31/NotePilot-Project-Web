@@ -5,12 +5,32 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useEditMode } from "@/components/edit-mode-provider"
+import { useEditorBridge } from "@/components/editor-bridge"
+import Texts from "./textTools/texts"
 
 export default function Toolbar() {
   const pathname = usePathname()
   const isNoteDetail = !!pathname && /^\/notes\/[^/]+\/?$/.test(pathname)
   const { editModeEnabled } = useEditMode()
   const visible = isNoteDetail && editModeEnabled
+  const { editor } = useEditorBridge()
+  const [, forceUpdate] = React.useReducer((x) => x + 1, 0)
+
+  React.useEffect(() => {
+    if (!editor) return
+    const handler = () => forceUpdate()
+    editor.on('transaction', handler)
+    editor.on('update', handler)
+    editor.on('selectionUpdate', handler)
+    return () => {
+      editor.off('transaction', handler)
+      editor.off('update', handler)
+      editor.off('selectionUpdate', handler)
+    }
+  }, [editor])
+
+  const canUndo = !!editor?.can().undo?.()
+  const canRedo = !!editor?.can().redo?.()
 
   return (
     <footer
@@ -25,8 +45,10 @@ export default function Toolbar() {
         <p className="text-sm font-medium text-primary">Edit tools</p>
         <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
         <div className="ml-auto flex items-center gap-2">
-          <Button size="sm" variant="outline">Undo</Button>
-          <Button size="sm" variant="outline">Redo</Button>
+          <Texts />
+          <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
+          <Button size="sm" variant="outline" disabled={!canUndo} onClick={() => editor?.chain().focus().undo().run()}>Undo</Button>
+          <Button size="sm" variant="outline" disabled={!canRedo} onClick={() => editor?.chain().focus().redo().run()}>Redo</Button>
           <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
           <Button size="sm" variant="default">Save</Button>
         </div>

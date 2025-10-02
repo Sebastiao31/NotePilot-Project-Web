@@ -9,13 +9,13 @@ import {
   IconUnderline,
   IconList,
   IconListNumbers,
-  IconHeading,
 } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
+import { useEditorBridge } from "./editor-bridge";
 
 const Tiptap = () => {
-  const [headingLevel, setHeadingLevel] = useState(1);
+  const { setEditor } = useEditorBridge()
 
   const editor = useEditor({
     extensions: [StarterKit, Underline],
@@ -29,15 +29,15 @@ const Tiptap = () => {
     immediatelyRender: false,
   });
 
+  useEffect(() => {
+    if (editor) setEditor(editor)
+    return () => setEditor(null)
+  }, [editor, setEditor])
+
   if (!editor) {
     return null;
   }
 
-  const saveContent = () => {
-    if (editor) {
-      console.log(editor.getJSON());
-    }
-  };
 
   return (
     <>
@@ -45,26 +45,6 @@ const Tiptap = () => {
         <div className="w-full p-2">
           <h2>Editor</h2>
           <div className="flex space-x-2 mb-2">
-            <div className="relative">
-              <Button variant="outline" size="icon">
-                <IconHeading />
-              </Button>
-              <select
-                value={headingLevel}
-                onChange={(e) => {
-                  const level = Number(e.target.value);
-                  setHeadingLevel(level);
-                  editor.chain().focus().toggleHeading({ level }).run();
-                }}
-                className="absolute top-0 left-0 opacity-0 w-full h-full cursor-pointer"
-              >
-                {[1, 2, 3, 4, 5, 6].map((level) => (
-                  <option key={level} value={level}>
-                    H{level}
-                  </option>
-                ))}
-              </select>
-            </div>
             <Button
               onClick={() => editor.chain().focus().toggleBold().run()}
               variant="outline"

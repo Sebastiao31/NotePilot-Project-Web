@@ -15,7 +15,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { IconCards, IconCirclePlus, IconLanguage, IconMicrophone2, IconRefresh, IconSitemap, IconTestPipe } from "@tabler/icons-react"
+import { IconCards, IconPlus, IconLanguage, IconMicrophone2, IconRefresh, IconSitemap, IconTestPipe } from "@tabler/icons-react"
 import Quiz from "@/components/modals/quiz"
 import FlashcardsModal from "@/components/modals/flashcards"
 import { useParams } from "next/navigation"
@@ -53,8 +53,8 @@ const AiTools = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="chat">
-            <IconCirclePlus className="size-5" />
+        <Button variant="ghost" size="chat">
+            <IconPlus className="size-5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">

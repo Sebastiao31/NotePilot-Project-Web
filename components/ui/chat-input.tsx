@@ -24,19 +24,21 @@ export default function ChatInput({ value, onChange, onSubmit, loading, placehol
       <div className='w-full'>
         <Input
           type='text'
-          placeholder={placeholder ?? 'Ask about this note'}
+          placeholder={placeholder ?? 'Ask about this note...'}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={onKeyDown}
           disabled={!!loading}
+          className="-bg-primary border-none ring-none focus-none outline-none"
         />
       </div>
-
+      {/* 
       <div>
         <Button size='icon' onClick={onSubmit} disabled={!!loading || !value.trim()} aria-label='Send message'>
           <IconArrowUp className='size-6' />
         </Button>
       </div>
+      */}
     </div>
   )
 }

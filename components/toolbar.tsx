@@ -27,6 +27,16 @@ export default function Toolbar() {
   const visible = isNoteDetail && editModeEnabled
   const { editor, saveStatus, lastSavedAt } = useEditorBridge()
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0)
+  const [shouldRender, setShouldRender] = React.useState(visible)
+
+  React.useEffect(() => {
+    if (visible) {
+      setShouldRender(true)
+      return
+    }
+    const timeout = setTimeout(() => setShouldRender(false), 300)
+    return () => clearTimeout(timeout)
+  }, [visible])
 
   React.useEffect(() => {
     if (!editor) return
@@ -43,6 +53,10 @@ export default function Toolbar() {
 
   const canUndo = !!editor?.can().undo?.()
   const canRedo = !!editor?.can().redo?.()
+
+  if (!shouldRender) {
+    return null
+  }
 
   return (
     <footer

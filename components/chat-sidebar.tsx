@@ -3,7 +3,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { useChatSidebar } from "./chat-provider"
-import { IconChevronsRight, IconClock, IconPlus } from "@tabler/icons-react"
+import { IconArrowUp, IconChevronsRight, IconClock, IconPlus, IconLoader2 } from "@tabler/icons-react"
 import { Button } from "./ui/button"
 import ChatInput from "./ui/chat-input"
 import { useParams } from "next/navigation"
@@ -40,6 +40,10 @@ export function ChatSidebar() {
   const [loading, setLoading] = React.useState(false)
   const [chatId, setChatId] = React.useState<string | null>(null)
   const [suggestions, setSuggestions] = React.useState<string[] | null>(null)
+  const [assistantDraft, setAssistantDraft] = React.useState<{ text: string; phase: number; active: boolean } | null>(null)
+  const [pendingAnswer, setPendingAnswer] = React.useState<string | null>(null)
+  const phaseIntervalRef = React.useRef<number | null>(null)
+  const typingIntervalRef = React.useRef<number | null>(null)
 
   const isDraggingRef = React.useRef(false)
   const startXRef = React.useRef(0)
@@ -110,6 +114,12 @@ export function ChatSidebar() {
     const q = question.trim()
     if (!q || !noteId) return
     setLoading(true)
+    // Start assistant draft with status cycling
+    setAssistantDraft({ text: "", phase: 0, active: true })
+    if (phaseIntervalRef.current) window.clearInterval(phaseIntervalRef.current)
+    phaseIntervalRef.current = window.setInterval(() => {
+      setAssistantDraft((prev) => (prev ? { ...prev, phase: (prev.phase + 1) % 3 } : prev))
+    }, 2000)
     const activeChatId = chatId || (await newChat())
     if (!activeChatId) return
     const messagesCol = collection(db, "notes", noteId, "chats", activeChatId, "messages")
@@ -131,10 +141,46 @@ export function ChatSidebar() {
       })
       const data = await res.json()
       const answer = (data?.answer ?? "") as string
-      await addDoc(messagesCol, { role: "assistant", content: answer || "(No answer)", createdAt: serverTimestamp() })
-      await setDoc(doc(db, "notes", noteId, "chats", activeChatId), { updatedAt: serverTimestamp() }, { merge: true })
+      setPendingAnswer(answer)
+      // Stop status cycling and start typewriter animation
+      if (phaseIntervalRef.current) {
+        window.clearInterval(phaseIntervalRef.current)
+        phaseIntervalRef.current = null
+      }
+
+      const chars = Array.from(answer || "")
+      let i = 0
+      if (typingIntervalRef.current) window.clearInterval(typingIntervalRef.current)
+      typingIntervalRef.current = window.setInterval(async () => {
+        i += 1
+        setAssistantDraft((prev) => (prev ? { ...prev, text: chars.slice(0, i).join("") } : prev))
+        if (i >= chars.length) {
+          if (typingIntervalRef.current) {
+            window.clearInterval(typingIntervalRef.current)
+            typingIntervalRef.current = null
+          }
+          // Persist final assistant message
+          await addDoc(messagesCol, { role: "assistant", content: answer || "(No answer)", createdAt: serverTimestamp() })
+          await setDoc(doc(db, "notes", noteId, "chats", activeChatId), { updatedAt: serverTimestamp() }, { merge: true })
+          // Keep draft briefly to avoid flicker until snapshot updates
+          setTimeout(() => {
+            setAssistantDraft(null)
+            setPendingAnswer(null)
+          }, 600)
+        }
+      }, 16)
     } catch (err) {
+      if (phaseIntervalRef.current) {
+        window.clearInterval(phaseIntervalRef.current)
+        phaseIntervalRef.current = null
+      }
+      if (typingIntervalRef.current) {
+        window.clearInterval(typingIntervalRef.current)
+        typingIntervalRef.current = null
+      }
+      setAssistantDraft({ text: "Sorry, something went wrong.", phase: 0, active: true })
       await addDoc(messagesCol, { role: "assistant", content: "Sorry, something went wrong.", createdAt: serverTimestamp() })
+      setTimeout(() => setAssistantDraft(null), 800)
     } finally {
       setLoading(false)
     }
@@ -261,11 +307,40 @@ export function ChatSidebar() {
               </div>
             ))
           )}
+          {/* Ephemeral assistant draft: status/typing */}
+          {assistantDraft && (
+            <div className={cn("flex", "justify-start")}> 
+              <div className={cn("max-w-[85%] rounded-xl px-4 py-3 break-words bg-background-primary text-foreground/90")}> 
+                {pendingAnswer ? (
+                  <MarkdownChat content={assistantDraft.text} />
+                ) : (
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <IconLoader2 className="size-4 animate-spin" />
+                    <span>
+                      {assistantDraft.phase === 0 && "Analyzing content…"}
+                      {assistantDraft.phase === 1 && "Thinking…"}
+                      {assistantDraft.phase === 2 && "Composing answer…"}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           <div ref={messagesEndRef} />
         </div>
-        <div className="border-t items-center flex gap-2 p-3">
-          <AiTools />
+        <div className="p-4 border m-4 rounded-lg">
           <ChatInput value={input} onChange={setInput} onSubmit={ask} loading={loading} />
+          <div className="mt-4 w-full flex">
+            <AiTools />
+            <Button  size="chat" className="rounded-full ml-auto" onClick={ask} disabled={loading || !input.trim()} aria-label="Send message">
+              {loading ? (
+                <IconLoader2 className="size-5 animate-spin" />
+              ) : (
+                <IconArrowUp className="size-5" />
+              )}
+            </Button>
+            
+          </div>
         </div>
       </div>
     </div>

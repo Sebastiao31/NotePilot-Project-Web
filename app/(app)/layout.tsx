@@ -35,8 +35,10 @@ const layout = ({children}: {children: React.ReactNode}) => {
                 <NoteInset>
                   <ChatInset>
                   <SiteHeader />
-                  {children}
-                  <Toolbar />
+                  <div className="flex min-h-[calc(100vh-var(--header-height))] flex-col">
+                    {children}
+                    <Toolbar />
+                  </div>
                   </ChatInset>
                 </NoteInset>
               </SidebarInset>

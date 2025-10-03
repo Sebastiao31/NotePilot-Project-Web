@@ -18,13 +18,14 @@ import HorizontalRule from "./textTools/horizontal-rule"
 import Background from "./textTools/background"
 import TableTool from "./textTools/table"
 import MathTool from "./textTools/math"
+import { IconAlertCircle, IconCheck, IconLoader2 } from "@tabler/icons-react"
 
 export default function Toolbar() {
   const pathname = usePathname()
   const isNoteDetail = !!pathname && /^\/notes\/[^/]+\/?$/.test(pathname)
   const { editModeEnabled } = useEditMode()
   const visible = isNoteDetail && editModeEnabled
-  const { editor } = useEditorBridge()
+  const { editor, saveStatus, lastSavedAt } = useEditorBridge()
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0)
 
   React.useEffect(() => {
@@ -52,7 +53,7 @@ export default function Toolbar() {
         (visible ? "translate-y-0 pointer-events-auto" : "translate-y-full pointer-events-none")
       }
     >
-      <div className="flex w-full justify-center  items-center gap-2 px-4 lg:gap-2 lg:px-6">
+      <div className="relative flex w-full justify-center  items-center gap-2 px-4 lg:gap-2 lg:px-6">
        
         <div className="flex items-center ">
           
@@ -70,6 +71,7 @@ export default function Toolbar() {
           <Underline />
           <Background />
           <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
+          
           <Button size="chat" variant="ghost" disabled={!canUndo} onClick={() => editor?.chain().focus().undo().run()} aria-label="Undo">
             {/* IconArrowBackUp */}
             <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-arrow-back-up size-5" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -87,6 +89,28 @@ export default function Toolbar() {
             </svg>
           </Button>
         </div>
+        <div className="absolute right-4 lg:right-6 flex items-center gap-2 text-xs  text-muted-foreground min-w-28 justify-end">
+          
+            {saveStatus === 'saving' && (
+
+                <div className="flex items-center gap-1">
+                  <IconLoader2 className="size-4 animate-spin" />
+                  <span>Saving…</span>
+                </div>
+            )}
+            {saveStatus === 'saved' && (
+              <div className="flex items-center gap-1">
+                <IconCheck className="size-4" />
+                <span>Saved{lastSavedAt ? ` · ${new Date(lastSavedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : ''}</span>
+              </div>
+            )}
+            {saveStatus === 'error' && (
+                <div className="flex items-center gap-1 text-destructive">
+                  <IconAlertCircle className="size-4" />
+                <span>Save failed</span>
+              </div>
+            )}
+          </div>
       </div>
     </footer>
   )

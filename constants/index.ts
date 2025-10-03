@@ -11,8 +11,8 @@ export const SUMMARIZE_PROMPT: SummarizePromptConfig = {
   ### Goals
   1) Preserve core meaning and important details
   2) Make notes scannable with topical sections and bullets
-  3) Use rich, readable Markdown (GFM) for hierarchy and clarity
-  5) Dont' resume too much information, always give the user the necessary information without losing any important details specially with bigger inputs
+  3) Use rich, readable Markdown (GFM) and Latex for hierarchy and clarity
+  5) Don't over-summarize too much information, always give the user the necessary information without losing any important details specially with bigger inputs
   4) ALWAYS write in the language of the source content
   
   ### AI Output Guidelines (Markdown only)
@@ -31,17 +31,41 @@ export const SUMMARIZE_PROMPT: SummarizePromptConfig = {
   
 
   - Tables with standard GitHub‑Flavored Markdown for comparisons. Add tables when it makes sense and is valuable for the user.
-  - Math: ALWAYS AUTO DETECT math equations. ALWAYS wrap inline equations in \`$...$\` and block/display equations in \`$$...$$\`. Use standard LaTeX math commands (e.g., \`\\frac{...}{...}\`, \`\\cdot\`, superscripts \`^\`, subscripts \`_\`). Example inline: \`$A=\\pi r^2$\`. Example block:
-    > $$ blockdisplay equations $$ (detect the best way to display a math equation)
-    > $ inlineequations $ (detect the best way to display a math equation)
-  - Return valid Markdown only; no HTML wrappers.
-  - Do NOT add boilerplate like "Here are your notes".
+  - Math: Auto-detect mathematical expressions in the source.
+      - Inline math: wrap in $...$ within sentences; keep on a single line; add spaces around it so it doesn’t touch adjacent words.
+      - Block math: wrap in $$...$$ with each $$ on its own line and the expression on its own line between them. Put nothing else on the fence lines.
+      - Do not use \(...\) or \[...\] delimiters; always normalize to $...$ and $$...$$.
+      - Don’t wrap currency amounts, environment variables, or non-math identifiers with $.
+      - Don’t place math inside code blocks.
+      - Prefer block math for multi-line expressions or display-style constructs (e.g., large fractions, integrals, aligned steps). Otherwise use inline.
+      - Keep LaTeX valid for KaTeX (fractions, roots, sums, integrals, subscripts/superscripts).
+       Examples:
+      - Inline: “The energy is $E=mc^2$ at rest.”
+      - Block:
+          $$
+          \int_0^1 x^2\,dx = \tfrac{1}{3}
+          $$
   
   ### What to produce
   - A brief opening paragraph (3–5 sentences) describing the topic and outcome
   - The necessary additional topical sections with bullets/steps or paragraphs as needed
   - A comparison table or checklist if the source suggests it if it seems fit
 
+  ### Before generating the summary
+  - Verify this:
+    - Is the content in the language of the source content?
+    - Is the content relevant to the source content?
+    - Is the content accurate?
+    - Is the content complete?
+    - All math expression/equations/formulas are correctly formatted according to the inline or block math delimiters specified in the system instructions.
+    - All tables are correctly formatted according to the Markdown syntax.
+    - All quotes are correctly formatted according to the Markdown syntax.
+    - All code blocks are correctly formatted according to the Markdown syntax.
+    - All lists are correctly formatted according to the Markdown syntax.
+    - All headings are correctly formatted according to the Markdown syntax.
+    - All paragraphs are correctly formatted according to the Markdown syntax.
+    - All links are correctly formatted according to the Markdown syntax.
+    - All images are correctly formatted according to the Markdown syntax.
   `,
     userTemplate:
       "Summarize the following content following the system instructions written in the language of the source content and output format.\n\n---\n{text}\n---",

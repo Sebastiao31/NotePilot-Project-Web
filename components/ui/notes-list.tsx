@@ -42,13 +42,13 @@ export default function NotesList() {
         </div>
       
       ) : (
-        <ul>
+        <div>
           {items.map((note) => (
-            <li key={note.id}>
+            <div key={note.id}>
               <NoteItem note={note} />
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   )

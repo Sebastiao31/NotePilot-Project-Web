@@ -1,10 +1,21 @@
 import { NextRequest } from 'next/server'
 import OpenAI from 'openai'
-import { marked } from 'marked'
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import remarkRehype from 'remark-rehype'
+import rehypeKatex from 'rehype-katex'
+import rehypeStringify from 'rehype-stringify'
 import { generateJSON } from '@tiptap/html'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
 import Highlight from '@tiptap/extension-highlight'
+import { Table } from '@tiptap/extension-table'
+import TableRow from '@tiptap/extension-table-row'
+import TableHeader from '@tiptap/extension-table-header'
+import TableCell from '@tiptap/extension-table-cell'
+import Mathematics from '@tiptap/extension-mathematics'
 
 export async function POST(req: NextRequest) {
   try {
@@ -64,11 +75,24 @@ export async function POST(req: NextRequest) {
     })
     const title = titleResp.choices[0]?.message?.content?.trim() || ''
 
-    const summaryHtml = marked.parse(summary || '') as string
+    const file = await unified()
+      .use(remarkParse)
+      .use(remarkGfm)
+      .use(remarkMath)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeKatex)
+      .use(rehypeStringify)
+      .process(summary || '')
+    const summaryHtml = String(file)
     const doc = generateJSON(summaryHtml, [
       StarterKit,
       Underline,
       Highlight.configure({ multicolor: true }),
+      Table.configure({ resizable: true }),
+      TableRow,
+      TableHeader,
+      TableCell,
+      Mathematics,
     ])
 
     return new Response(JSON.stringify({ summary, title, overview, transcript: text, doc }), { status: 200 })

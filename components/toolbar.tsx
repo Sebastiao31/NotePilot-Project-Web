@@ -17,6 +17,7 @@ import Underline from "./textTools/underline"
 import HorizontalRule from "./textTools/horizontal-rule"
 import Background from "./textTools/background"
 import TableTool from "./textTools/table"
+import MathTool from "./textTools/math"
 
 export default function Toolbar() {
   const pathname = usePathname()
@@ -61,6 +62,7 @@ export default function Toolbar() {
           <Blockquote />
           <HorizontalRule />
           <TableTool />
+          <MathTool />
           <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-6" />
           <Bold />
           <Italic />

@@ -270,7 +270,7 @@
   h2 {
     font-size: 1.5rem;
     font-weight: 600;
-    margin-bottom: .7rem;
+    margin-bottom: 1rem;
   }
   h3 {
     font-size: 1.25rem;
@@ -329,10 +329,20 @@
     width: 100%;
     border-collapse: collapse;
     border: 1px solid var(--border);
-    th, td {
-      padding: 0.5rem;
-      border: 1px solid var(--border);
-    }
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+  }
+
+  th {
+    background-color: var(--muted);
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+  }
+
+  td {
+    padding: 0.5rem;
+    border: 1px solid var(--border);
   }
 
   /* Editor highlight colors (theme-aware) */
@@ -379,5 +389,58 @@
     border-style: solid;
     margin-top: 2rem;
     margin-bottom: 2rem;
+  }
+
+  /* TipTap table + column resizing */
+  .tiptap table {
+    width: 100%;
+    table-layout: fixed; /* required for resizable columns */
+    border-collapse: collapse;
+  }
+  .tiptap th,
+  .tiptap td {
+    position: relative; /* required so resize handle can be positioned */
+    border: 1px solid var(--border);
+    padding: 6px 8px;
+    vertical-align: top;
+  }
+  .tiptap .column-resize-handle {
+    position: absolute;
+    right: -2px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: transparent;
+    cursor: col-resize;
+  }
+  .tiptap td:hover .column-resize-handle,
+  .tiptap th:hover .column-resize-handle {
+    background-color: color-mix(in oklch, var(--ring) 60%, transparent);
+  }
+  .tiptap .selectedCell {
+    /* optional selection styling */
+    outline: 2px solid color-mix(in oklch, var(--ring) 70%, transparent);
+    outline-offset: -2px;
+  }
+  .tiptap .resize-cursor,
+  .ProseMirror.resize-cursor {
+    cursor: col-resize;
+  }
+  /* KaTeX baseline tweaks (uses global import already present) */
+  .tiptap .katex-display {
+    margin: 1rem 0;
+  }
+  .tiptap .katex {
+    font-size: 1em;
+  }
+  /* Center TipTap mathematics block nodes */
+  .tiptap .tiptap-mathematics-render[data-type="block-math"] {
+    display: block;
+    text-align: center;
+    font-size: 1.25rem;
+  }
+  .tiptap .tiptap-mathematics-render[data-type="block-math"] .katex-display {
+    margin-left: auto;
+    margin-right: auto;
   }
 }

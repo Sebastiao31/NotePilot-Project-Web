@@ -10,17 +10,18 @@ import Lists from "./lists"
 import Background from "./background"
 import { Separator } from "../ui/separator"
 import TableTool from "./table"
+import MathTool from "./math"
+import { useEditMode } from "../edit-mode-provider"
 
 const BubbleMenuFloating = () => {
   const { editor } = useEditorBridge()
+  const { editModeEnabled } = useEditMode()
   if (!editor) return null
+  if (!editModeEnabled) return null
 
   return (
     <BubbleMenu editor={editor} pluginKey="bubble-menu-formatting">
       <div className="flex items-center gap-2 rounded-lg border bg-popover px-2 py-1 shadow-md">
-        <Texts />
-        <Lists />
-        <Separator orientation="vertical" className="data-[orientation=vertical]:h-6" />
         <Button
           size="chat"
           variant={editor.isActive("bold") ? "default" : "ghost"}
@@ -53,7 +54,6 @@ const BubbleMenuFloating = () => {
         >
           <IconStrikethrough className="size-5" />
         </Button>
-        <TableTool />
         <Background />
       </div>
     </BubbleMenu>

@@ -8,6 +8,7 @@ import { Table } from "@tiptap/extension-table";
 import TableRow from "@tiptap/extension-table-row";
 import TableHeader from "@tiptap/extension-table-header";
 import TableCell from "@tiptap/extension-table-cell";
+import Mathematics from "@tiptap/extension-mathematics";
 import {
     IconBold,
   IconItalic,
@@ -19,11 +20,13 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useEditorBridge } from "./editor-bridge";
 import BubbleMenuFloating from "./textTools/bubble-menu";
+import { useEditMode } from "./edit-mode-provider";
 
 type Props = { initialDoc?: any | null; fallbackMarkdown?: string }
 
 const Tiptap = ({ initialDoc, fallbackMarkdown }: Props) => {
   const { setEditor } = useEditorBridge()
+  const { editModeEnabled } = useEditMode()
 
   const editor = useEditor({
     extensions: [
@@ -34,8 +37,12 @@ const Tiptap = ({ initialDoc, fallbackMarkdown }: Props) => {
       TableRow,
       TableHeader,
       TableCell,
+      Mathematics.configure({
+        katexOptions: { output: 'html' }
+      }),
     ],
     content: initialDoc || "<p></p>",
+    editable: editModeEnabled,
     editorProps: {
       attributes: {
         class:
@@ -44,6 +51,11 @@ const Tiptap = ({ initialDoc, fallbackMarkdown }: Props) => {
     },
     immediatelyRender: false,
   });
+
+  useEffect(() => {
+    if (!editor) return
+    editor.setEditable(editModeEnabled)
+  }, [editor, editModeEnabled])
 
   useEffect(() => {
     if (editor) setEditor(editor)

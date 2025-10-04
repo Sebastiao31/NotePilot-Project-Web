@@ -40,6 +40,7 @@ const GoogleAuthBtn = () => {
           ...baseData,
           createdAt: serverTimestamp(),
           roles: ['user'],
+          completedOnboarding: false,
         })
       } else {
         await setDoc(userRef, baseData, { merge: true })

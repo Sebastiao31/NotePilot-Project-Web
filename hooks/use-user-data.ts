@@ -12,6 +12,7 @@ export type AppUser = {
   displayName: string | null
   photoURL: string | null
   roles?: string[]
+  completedOnboarding?: boolean
 } | null
 
 type UseUserData = {
@@ -47,6 +48,7 @@ export function useUserData(): UseUserData {
                 displayName: data.displayName ?? user.displayName ?? null,
                 photoURL: data.photoURL ?? user.photoURL ?? null,
                 roles: data.roles ?? [],
+                completedOnboarding: data.completedOnboarding ?? false,
               }
             : {
                 uid: user.uid,
@@ -54,6 +56,7 @@ export function useUserData(): UseUserData {
                 displayName: user.displayName ?? null,
                 photoURL: user.photoURL ?? null,
                 roles: [],
+                completedOnboarding: false,
               }
         )
         setLoading(false)

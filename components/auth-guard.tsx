@@ -10,7 +10,7 @@ type Props = {
 }
 
 export default function AuthGuard({ children }: Props) {
-  const { authUser, loading } = useUserData()
+  const { authUser, userDoc, loading } = useUserData()
   const router = useRouter()
   const pathname = usePathname()
 
@@ -18,14 +18,22 @@ export default function AuthGuard({ children }: Props) {
     if (loading) return
     if (!authUser) {
       router.replace('/signin')
+      return
     }
-  }, [authUser, loading, router, pathname])
+    // If authenticated but onboarding not completed, redirect to onboarding flow
+    if (!userDoc?.completedOnboarding) {
+      if (pathname !== '/onboarding') {
+        router.replace('/onboarding')
+      }
+    }
+  }, [authUser, userDoc?.completedOnboarding, loading, router, pathname])
 
   if (loading) {
     return null
   }
 
   if (!authUser) return null
+  if (!userDoc?.completedOnboarding && pathname !== '/onboarding') return null
 
   return <>{children}</>
 }

@@ -26,9 +26,9 @@ import { doc, setDoc } from "firebase/firestore";
 import { useParams } from "next/navigation";
 import { useUserData } from "@/hooks/use-user-data";
 
-type Props = { initialDoc?: any | null; fallbackMarkdown?: string }
+type Props = { initialDoc?: any | null; fallbackMarkdown?: string; editable?: boolean }
 
-const Tiptap = ({ initialDoc, fallbackMarkdown }: Props) => {
+const Tiptap = ({ initialDoc, fallbackMarkdown, editable }: Props) => {
   const { setEditor, setSaveStatus, setLastSavedAt } = useEditorBridge()
   const { db } = getFirebase()
   const params = useParams()
@@ -40,6 +40,7 @@ const Tiptap = ({ initialDoc, fallbackMarkdown }: Props) => {
   const lastSavedSerializedRef = useRef<string | null>(null)
   const lastAppliedInitialSerializedRef = useRef<string | null>(null)
   const { editModeEnabled } = useEditMode()
+  const isEditable = typeof editable === 'boolean' ? editable : editModeEnabled
 
   const editor = useEditor({
     extensions: [
@@ -55,7 +56,7 @@ const Tiptap = ({ initialDoc, fallbackMarkdown }: Props) => {
       }),
     ],
     content: initialDoc || "<p></p>",
-    editable: editModeEnabled,
+    editable: isEditable,
     editorProps: {
       attributes: {
         class:
@@ -67,8 +68,8 @@ const Tiptap = ({ initialDoc, fallbackMarkdown }: Props) => {
 
   useEffect(() => {
     if (!editor) return
-    editor.setEditable(editModeEnabled)
-  }, [editor, editModeEnabled])
+    editor.setEditable(isEditable)
+  }, [editor, isEditable])
 
   // Debounced autosave: save noteDoc (json) and note (plain text summary)
   useEffect(() => {
@@ -121,9 +122,11 @@ const Tiptap = ({ initialDoc, fallbackMarkdown }: Props) => {
   }, [editor, db, noteId, authUser, setSaveStatus, setLastSavedAt])
 
   useEffect(() => {
-    if (editor) setEditor(editor)
+    if (!editor) return
+    if (!isEditable) return
+    setEditor(editor)
     return () => setEditor(null)
-  }, [editor, setEditor])
+  }, [editor, isEditable, setEditor])
 
   // Update editor content when a new initialDoc arrives from Firestore
   useEffect(() => {

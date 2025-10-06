@@ -34,9 +34,8 @@ export const SUMMARIZE_PROMPT: SummarizePromptConfig = {
   - Math: Auto-detect mathematical expressions in the source.
       - Inline math: wrap in $...$ within sentences; keep on a single line; add spaces around it so it doesn’t touch adjacent words.
       - Block math: wrap in $$...$$ with each $$ on its own line and the expression on its own line between them. Put nothing else on the fence lines.
-      - Do not use \(...\) or \[...\] delimiters; always normalize to $...$ and $$...$$.
       - Don’t wrap currency amounts, environment variables, or non-math identifiers with $.
-      - Don’t place math inside code blocks.
+      - Always use \(...\) or \[...\] delimiters inside $...$ and $$...$$.
       - Prefer block math for multi-line expressions or display-style constructs (e.g., large fractions, integrals, aligned steps). Otherwise use inline.
       - Keep LaTeX valid for KaTeX (fractions, roots, sums, integrals, subscripts/superscripts).
        Examples:

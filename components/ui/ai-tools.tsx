@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { IconCards, IconPlus, IconLanguage, IconMicrophone2, IconRefresh, IconSitemap, IconTestPipe } from "@tabler/icons-react"
 import Quiz from "@/components/modals/quiz"
+import Rewrite from "@/components/modals/rewrite"
 import FlashcardsModal from "@/components/modals/flashcards"
 import { useParams } from "next/navigation"
 import { getFirebase } from "@/lib/firebase"
@@ -30,6 +31,7 @@ const AiTools = () => {
   const [existingQuizId, setExistingQuizId] = React.useState<string | null>(null)
   const [openFlash, setOpenFlash] = React.useState(false)
   const [existingFlashId, setExistingFlashId] = React.useState<string | null>(null)
+  const [openRewrite, setOpenRewrite] = React.useState(false)
 
   React.useEffect(() => {
     if (!noteId) {
@@ -92,9 +94,7 @@ const AiTools = () => {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuLabel>Note</DropdownMenuLabel>
-          <DropdownMenuItem>
-            <IconRefresh className="size-5 text-accent-foreground " />
-            Rewrite</DropdownMenuItem>
+         
 
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
@@ -119,6 +119,9 @@ const AiTools = () => {
       )}
       {noteId && (
         <FlashcardsModal noteId={noteId} setId={existingFlashId} open={openFlash} onOpenChange={setOpenFlash} />
+      )}
+      {noteId && (
+        <Rewrite noteId={noteId} open={openRewrite} onOpenChange={setOpenRewrite} />
       )}
     </DropdownMenu>
   )

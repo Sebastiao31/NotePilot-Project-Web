@@ -30,6 +30,7 @@ const WebsiteTabContent = () => {
       closeBtn?.click()
     } catch {}
     const { db } = getFirebase()
+    let noteId: string | null = null
     try {
       const selectedFolderName = folders.find((f) => f.id === folderId)?.name ?? null
       const placeholder = {
@@ -45,27 +46,20 @@ const WebsiteTabContent = () => {
         type: 'Website',
       }
       const ref = await addDoc(collection(db, 'notes'), placeholder)
+      noteId = ref.id
 
-      const res = await fetch('/api/notes/website', {
+      const res = await fetch('/api/notes/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: clean })
+        body: JSON.stringify({ type: 'website', url: clean })
       })
-      if (!res.ok) throw new Error('Website summarize failed')
+      if (!res.ok) throw new Error('Website generation failed')
       const data = await res.json()
       const summary: string = data.summary || ''
       const docJson = data.doc || null
       const title: string = (data.title || '').slice(0, 80)
       const transcript: string = data.transcript || ''
-
-      // Generate plain-text overview from raw transcript (not markdown summary)
-      const overRes = await fetch('/api/notes/overview', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: transcript })
-      })
-      const overData = await overRes.json()
-      const overview: string = overData.overview || ''
+      const overview: string = data.overview || ''
 
       await updateDoc(doc(db, 'notes', ref.id), {
         note: summary,
@@ -81,6 +75,11 @@ const WebsiteTabContent = () => {
       setFolderId(undefined)
     } catch (e) {
       console.error(e)
+      try {
+        if (noteId) {
+          await updateDoc(doc(db, 'notes', noteId), { status: 'error' })
+        }
+      } catch {}
     } finally {
       setLoading(false)
     }

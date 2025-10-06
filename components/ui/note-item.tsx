@@ -48,7 +48,12 @@ export default function NoteItem({ note }: Props) {
                 <IconLoader2 className="size-4 animate-spin" />
                 <span>Generating note…</span>
               </span>
-            ) :  note.title}
+            ) : note.status === 'error' ? (
+              <span className="inline-flex items-center gap-2 text-destructive">
+                <span className="size-2 rounded-full bg-destructive inline-block" />
+                <span>Failed to generate</span>
+              </span>
+            ) : note.title}
             </div>
 
             <div>

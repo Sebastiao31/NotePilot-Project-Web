@@ -8,6 +8,7 @@ import { getFirebase, serverTimestamp } from '@/lib/firebase'
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
 import { useUserData } from '@/hooks/use-user-data'
 import { useFolders } from '@/hooks/use-folders'
+import { convertToHTML } from '@/lib/convertToHTML'
 
 const TextTabContent = () => {
   const { authUser } = useUserData()
@@ -27,6 +28,7 @@ const TextTabContent = () => {
       closeBtn?.click()
     } catch {}
     const { db } = getFirebase()
+    let noteId: string | null = null
     try {
       const selectedFolderName = folders.find((f) => f.id === folderId)?.name ?? null
       const placeholder = {
@@ -41,29 +43,23 @@ const TextTabContent = () => {
         type: 'Text',
       }
       const ref = await addDoc(collection(db, 'notes'), placeholder)
+      noteId = ref.id
 
-      const res = await fetch('/api/notes/summarize', {
+      const res = await fetch('/api/notes/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: clean }),
+        body: JSON.stringify({ type: 'text', text: clean }),
       })
-      if (!res.ok) throw new Error('Summarization failed')
+      if (!res.ok) throw new Error('Generation failed')
       const data = await res.json()
       const summary: string = data.summary || ''
       const docJson = data.doc || null
       const title: string = (data.title || '').slice(0, 80)
-
-      // Generate plain-text overview from original input (not markdown summary)
-      const overRes = await fetch('/api/notes/overview', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: clean })
-      })
-      const overData = await overRes.json()
-      const overview: string = overData.overview || ''
+      const overview: string = data.overview || ''
+      const html: string = convertToHTML(docJson)
 
       await updateDoc(doc(db, 'notes', ref.id), {
-        note: summary,
+        note: html, // store HTML rendering of the generated TipTap JSON
         noteDoc: docJson ? JSON.stringify(docJson) : null,
         title: title || placeholder.title,
         overview: overview,
@@ -74,6 +70,11 @@ const TextTabContent = () => {
       setFolderId(undefined)
     } catch (e) {
       console.error(e)
+      try {
+        if (noteId) {
+          await updateDoc(doc(db, 'notes', noteId), { status: 'error' })
+        }
+      } catch {}
     } finally {
       setLoading(false)
     }

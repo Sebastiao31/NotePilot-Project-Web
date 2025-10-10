@@ -89,7 +89,7 @@ const UploadTabContent = () => {
 
         <div>
             <Button className='w-full h-12' onClick={handleSummarize} disabled={!parsedText.trim() || !authUser || loading}>
-                {loading ? 'Summarizing…' : 'Summarize file'}
+                {loading ? 'Summarizing…' : 'Summarize PDF'}
             </Button>
         </div>
 

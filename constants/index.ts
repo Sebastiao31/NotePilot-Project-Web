@@ -13,11 +13,11 @@ export const SUMMARIZE_PROMPT: SummarizePromptConfig = {
   2) Make notes scannable with topical sections and bullets
   3) Use rich, readable Markdown (GFM) and Latex for hierarchy and clarity
   5) Don't over-summarize too much information, always give the user the necessary information without losing any important details specially with bigger inputs
-  4) ALWAYS write in the language of the source content
+  4) ALWAYS write in the language of the source text content
   
   ### AI Output Guidelines (Markdown only)
   - Use topical headings (not generic labels). Prefer "What this is", "How it works", "Results", "Limitations", etc.
-  - In the first heading (title) don't use a generic title, like "Overview", "Summary", write a specific title based on the content.
+  - In the first heading (title) don't use a generic title, like "Overview", "Summary", write a specific title based on the content. Don't make it too long 3-8 words maximum.
   - Headings: use #, ##, ### for hierarchy (h1/h2/h3).
   - In the h1, try to use words, like "Overview", "Summary" and respected words of the language that the summarie is written in.
   - Prefer short paragraphs and bullet lists, but feel free to use more paragraphs and bullet lists if the content is big and complex and if you think it fits better and is more valuable for the user. Use numbered lists for steps.

@@ -55,11 +55,28 @@ const GoogleAuthBtn = () => {
   }
 
   return (
+
+
+      <button className='flex items-center justify-center p-4 gap-2 border-[#EEEEEE] border-2 w-full rounded-lg hover:bg-[#EEEEEE] transition-all duration-300 hover:cursor-pointer' onClick={handleSignIn}>
+        <img src="socials/google.svg" alt="google" className='w-6 h-6' />
+        <span className='text-xl font-semibold text-black'>
+          {loading ? 'Signing in...' : 'Sign in with Google'}
+        </span>
+
+      </button>
+
+
+
+
+  )
+
+    {/* 
     <Button onClick={handleSignIn} disabled={loading} className="h-10">
       <IconBrandGoogle className="!size-5 mr-2" />
       {loading ? 'Signing in…' : 'Continue with Google'}
     </Button>
-  )
+    */}
+  
 }
 
 export default GoogleAuthBtn

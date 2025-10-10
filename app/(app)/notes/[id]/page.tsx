@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { Suspense } from 'react'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { getFirebase } from '@/lib/firebase'
 import MarkdownViewer from '@/components/ui/markdown-viewer'
@@ -11,6 +11,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 import MoreOptions from '@/components/modals/more-options'
 import { Button } from '@/components/ui/button'
 import RichText from '@/components/rich-text'
+import Loading from '../loading'
 
 const Page = () => {
   const { db } = getFirebase()
@@ -43,8 +44,8 @@ const Page = () => {
   return (
     <div className='p-6 bg-background-primary h-full'>
 
-      <div>
-        <RichText initialDoc={noteDoc} fallbackMarkdown={content} />
+      <div> 
+          <RichText initialDoc={noteDoc} fallbackMarkdown={content} />
       </div>
 
       {content ? 

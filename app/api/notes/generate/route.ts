@@ -1,23 +1,8 @@
-import { NextRequest } from 'next/server'
+﻿import { NextRequest } from 'next/server'
 import OpenAI from 'openai'
 import { SUMMARIZE_PROMPT, TITLE_PROMPT } from '@/constants'
 import { websiteTranscribe } from '@/lib/websiteTranscribe'
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkGfm from 'remark-gfm'
-import remarkMath from 'remark-math'
-import remarkRehype from 'remark-rehype'
-import rehypeKatex from 'rehype-katex'
-import rehypeStringify from 'rehype-stringify'
-import { generateJSON } from '@tiptap/html'
-import StarterKit from '@tiptap/starter-kit'
-import Underline from '@tiptap/extension-underline'
-import Highlight from '@tiptap/extension-highlight'
-import { Table } from '@tiptap/extension-table'
-import TableRow from '@tiptap/extension-table-row'
-import TableHeader from '@tiptap/extension-table-header'
-import TableCell from '@tiptap/extension-table-cell'
-import Mathematics from '@tiptap/extension-mathematics'
+import { markdownToTiptapDoc } from '@/lib/markdownToTiptapDoc'
 
 // Unified generation route
 // body: { type: 'website', url: string } | { type: 'text', text: string }
@@ -85,26 +70,7 @@ export async function POST(req: NextRequest) {
     })
     const title = titleResp.choices[0]?.message?.content?.trim() || ''
 
-    // Markdown -> HTML -> TipTap JSON
-    const file = await unified()
-      .use(remarkParse)
-      .use(remarkGfm)
-      .use(remarkMath)
-      .use(remarkRehype, { allowDangerousHtml: true })
-      .use(rehypeKatex)
-      .use(rehypeStringify)
-      .process(summary || '')
-    const summaryHtml = String(file)
-    const doc = generateJSON(summaryHtml, [
-      StarterKit,
-      Underline,
-      Highlight.configure({ multicolor: true }),
-      Table.configure({ resizable: true }),
-      TableRow,
-      TableHeader,
-      TableCell,
-      Mathematics,
-    ])
+    const doc = await markdownToTiptapDoc(summary)
 
     return new Response(
       JSON.stringify({
@@ -121,5 +87,3 @@ export async function POST(req: NextRequest) {
     return new Response(JSON.stringify({ error: 'Failed to generate note' }), { status: 500 })
   }
 }
-
-

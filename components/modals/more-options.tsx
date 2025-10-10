@@ -1,7 +1,7 @@
 import React from 'react'
 import { DialogHeader, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { IconBrandYoutubeFilled, IconLetterCaseToggle, IconUpload, IconWorldWww, IconX } from '@tabler/icons-react'
+import { IconBrandYoutubeFilled, IconLetterCaseToggle, IconPdf, IconWorldWww, IconX, IconFileTypePdf} from '@tabler/icons-react'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import YoutubeTabContent from '@/components/ui/youtube-tab-content'
@@ -42,9 +42,9 @@ const MoreOptions = () => {
                 <TabsTrigger value="Website">
                     <IconWorldWww/>
                     Website</TabsTrigger>
-                <TabsTrigger value="Upload">
-                    <IconUpload/>
-                    Upload</TabsTrigger>
+                <TabsTrigger value="PDF">
+                    <IconFileTypePdf/>
+                    PDF</TabsTrigger>
                 <TabsTrigger value="Text">
                     <IconLetterCaseToggle/>
                     Text</TabsTrigger>
@@ -55,7 +55,7 @@ const MoreOptions = () => {
                 <TabsContent value="Website">
                     <WebsiteTabContent/>
                 </TabsContent>
-                <TabsContent value="Upload">
+                <TabsContent value="PDF">
                     <UploadTabContent/>
                 </TabsContent>
                 <TabsContent value="Text">

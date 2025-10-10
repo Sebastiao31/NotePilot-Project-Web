@@ -15,6 +15,7 @@ import { EditModeProvider } from "@/components/edit-mode-provider"
 import Toolbar from "@/components/toolbar"
 import { EditorBridgeProvider } from "@/components/editor-bridge"
 
+
 const layout = ({children}: {children: React.ReactNode}) => {
   return (
     <SidebarProvider

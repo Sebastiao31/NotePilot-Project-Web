@@ -19,6 +19,7 @@ import {
   IconSettings,
   IconSmartHome,
   IconUsers,
+  IconMicrophone,
 } from "@tabler/icons-react"
 
 import { NavDocuments } from "@/components/nav-documents"
@@ -71,7 +72,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar collapsible="offcanvas" {...props}  >
       <SidebarHeader>
         <SidebarGroupLabel>
           <div className="flex items-center justify-between w-full pt-5 gap-2">

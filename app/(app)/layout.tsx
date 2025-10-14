@@ -1,6 +1,7 @@
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
 import { ChatProvider } from "@/components/chat-provider"
+import { AudioRecordProvider } from "@/components/ui/audio-rec-container"
 import { ChatSidebar } from "@/components/chat-sidebar"
 import { NoteProvider } from "@/components/note-provider"
 import { NoteSidebar } from "@/components/note-sidebar"
@@ -18,15 +19,9 @@ import { EditorBridgeProvider } from "@/components/editor-bridge"
 
 const layout = ({children}: {children: React.ReactNode}) => {
   return (
-    <SidebarProvider
-      style={
-        {
-          "--sidebar-width": "calc(var(--spacing) * 72)",
-          "--header-height": "calc(var(--spacing) * 16)",
-        } as React.CSSProperties
-      }
-    >
+    <SidebarProvider>
       <ChatProvider>
+        <AudioRecordProvider>
         <NoteProvider>
         <AuthGuard>
           <EditModeProvider>
@@ -49,6 +44,7 @@ const layout = ({children}: {children: React.ReactNode}) => {
           </EditModeProvider>
         </AuthGuard>
         </NoteProvider>
+        </AudioRecordProvider>
       </ChatProvider>
     </SidebarProvider>
   )

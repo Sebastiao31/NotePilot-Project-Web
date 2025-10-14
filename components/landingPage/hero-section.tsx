@@ -48,7 +48,7 @@ const HeroSection = () => {
                 </div>
 
                 <div className="px-2">
-                    <img src="/Hero-img.png" alt="Hero Section Image" className="w-full h-auto object-cover" />
+                    <Image src="/Hero-img.png" alt="Hero Section Image" className="w-full h-auto object-cover" width={1000} height={1000} />
                 </div>
             </div>
         </section>

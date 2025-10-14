@@ -13,6 +13,7 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar"
 import { ThemeToggle } from "./ui/theme-toggle"
+import FreePlanCard from "./plan/freeplan-card"
 
 export function NavSecondary({
   items,
@@ -28,15 +29,19 @@ export function NavSecondary({
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
+
+        <div>
+          <FreePlanCard />
+        </div>
         <SidebarMenu>
           {items.map((item) => {
             const isActive =
               pathname === item.url || pathname.startsWith(item.url + "/")
             return (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild isActive={isActive}>
+                <SidebarMenuButton asChild isActive={isActive} className="h-12 text-lg">
                   <a href={item.url}>
-                    <item.icon className="!size-5"/>
+                    <item.icon className="!size-6"/>
                     <span>{item.title}</span>
                   </a>
                 </SidebarMenuButton>
@@ -47,7 +52,7 @@ export function NavSecondary({
         <SidebarMenu>
           <SidebarMenuItem>
             <div className="flex items-center px-2 py-3 justify-between gap-2">
-            <span className="text-[16px] font-medium">Theme</span>
+            <span className="text-lg font-medium">Theme</span>
             <ThemeToggle /> 
             </div>
           </SidebarMenuItem>

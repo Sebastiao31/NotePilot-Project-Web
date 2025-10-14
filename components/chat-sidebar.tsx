@@ -278,7 +278,7 @@ export function ChatSidebar() {
             
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-4 text-[16px] space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 text-lg space-y-4">
           {messages.length === 0 ? (
             <div className="grid gap-2 ">
               {(suggestions && suggestions.length > 0) ? (

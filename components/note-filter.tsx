@@ -39,7 +39,9 @@ const noteFilter = () => {
               <SelectLabel>Folders</SelectLabel>
 
               <SelectItem value='view-all'>
-                All notes
+                <div className='flex items-center text-lg gap-2'>
+                  All notes
+                </div>
               </SelectItem>
               {folders.map((f) => (
                 <SelectItem key={f.id} value={f.id}>

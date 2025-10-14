@@ -65,13 +65,13 @@ export function NavUser({
     <SidebarMenu>
       <SidebarMenuItem>
         
-            <div className="flex w-full items-center gap-2 overflow-hidden rounded-lg p-2">
+            <div className="flex w-full items-center gap-3 overflow-hidden rounded-lg p-2">
               <Avatar className="h-10 w-10 rounded-full bg-sidebar-accent">
                 <AvatarImage src={avatarUrl} alt={displayName} />
               </Avatar>
               <div className="grid flex-1 gap-1.5 text-left leading-tight">
-                <span className="truncate text-[16px] font-semibold">{loading ? "User" : displayName}</span>
-                <span className="text-muted-foreground truncate text-xs">FREE</span>
+                <span className="truncate text-lg font-semibold">{loading ? "User" : displayName}</span>
+                <span className="text-muted-foreground truncate text-sm">FREE</span>
               </div>
               <Button
                 variant="logout"

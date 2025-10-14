@@ -15,8 +15,8 @@ const SignIn = () => {
                   </div>
 
                   <div className='flex flex-col items-center mb-24 justify-center w-fit mx-auto'>
-                    <div className="mx-8">
-                      <h1 className="font-semibold text-center text-black">Welcome to NotePilot!</h1>
+                    <div className="mx-8 gap-2 flex flex-col">
+                      <h1 className="font-semibold text-center text-3xl text-black">Welcome to NotePilot!</h1>
                       <p className="text-md text-muted-foreground text-center">Please enter your details to sign in your account</p>
                     </div>
 

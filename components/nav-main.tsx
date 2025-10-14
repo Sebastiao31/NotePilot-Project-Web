@@ -1,6 +1,6 @@
 "use client"
 
-import { IconBrandLine, IconCirclePlusFilled, IconFiles, IconLibraryPlus, IconMail, IconMicrophone, IconSparkles, type Icon } from "@tabler/icons-react"
+import { IconBrandLine, IconCirclePlusFilled, IconFiles, IconLibraryPlus, IconMail, IconMicrophone, IconMicrophoneFilled, IconSparkles, type Icon } from "@tabler/icons-react"
 import { usePathname, useParams } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
@@ -23,6 +23,7 @@ import {
 import MoreOptions from "@/components/modals/more-options"
 import { useNoteSidebar } from "./note-provider"
 import { useChatSidebar } from "./chat-provider"
+import { useAudioRecord } from "@/components/ui/audio-rec-container"
 import React from "react"
 import { doc, onSnapshot } from "firebase/firestore"
 import { getFirebase } from "@/lib/firebase"
@@ -40,6 +41,7 @@ export function NavMain({
   const params = useParams()
   const { toggle: toggleNoteSidebar } = useNoteSidebar()
   const { toggle: toggleChatSidebar, setOpen: setChatOpen, open: chatOpen } = useChatSidebar()
+  const { setOpen: setAudioOpen } = useAudioRecord()
   const { db } = getFirebase()
 
   const noteId = React.useMemo(() => {
@@ -78,9 +80,10 @@ export function NavMain({
             <SidebarMenuButton
               tooltip="Record Audio"
               size="record"
-              className="justify-center bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
+              className="justify-center h-14 rounded-xl text-lg bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
+              onClick={() => setAudioOpen(true)}
             >
-              <IconMicrophone className="!size-5" />
+              <IconMicrophoneFilled className="!size-5" />
               <span>Record Audio</span>
             </SidebarMenuButton>
             
@@ -94,8 +97,9 @@ export function NavMain({
               <SidebarMenuButton
                 tooltip="More Options"
                 variant="ghost"
+                className="h-12 text-lg"
               >
-                <IconLibraryPlus className="!size-5" />
+                <IconLibraryPlus className="!size-6" />
                 <span>More Options</span>
               </SidebarMenuButton>
             </DialogTrigger>
@@ -106,7 +110,7 @@ export function NavMain({
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarSeparator />
-        <SidebarMenu>
+        <SidebarMenu className="gap-2">
         
           {items.map((item) => {
             const isActive =
@@ -115,8 +119,8 @@ export function NavMain({
               return [
                 (
                   <SidebarMenuItem key="notes">
-                    <SidebarMenuButton tooltip={item.title} variant="ghost" onClick={toggleNoteSidebar}>
-                      {IconFiles && <IconFiles className="!size-5"/>}
+                    <SidebarMenuButton tooltip={item.title} variant="ghost" className="h-12 text-lg" onClick={toggleNoteSidebar}>
+                      {IconFiles && <IconFiles className="!size-6"/>}
                       <span>{item.title}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -126,11 +130,11 @@ export function NavMain({
                     <SidebarMenuButton
                       tooltip="Ai Chat"
                       variant="ghost"
-                      className="gap-2"
+                      className="gap-2 h-12 text-lg"
                       onClick={toggleChatSidebar}
                       disabled={!isAiChatEnabled}
                     >
-                      <IconBrandLine className="!size-5" />
+                      <IconBrandLine className="!size-6" />
                       <span>AI Chat</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -141,7 +145,7 @@ export function NavMain({
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton tooltip={item.title} variant="ghost" isActive={isActive} asChild>
                   <a href={item.url}>
-                    {item.icon && <item.icon className="!size-5"/>}
+                    {item.icon && <item.icon className="!size-6"/>}
                     <span>{item.title}</span>
                   </a>
                 </SidebarMenuButton>

@@ -36,13 +36,13 @@ export default function NoteItem({ note }: Props) {
   const isActive = pathname === `/notes/${note.id}`
 
   return (
-    <div className={"group block cursor-pointer rounded-md mb-2 " + (isActive ? "bg-sidebar" : "hover:bg-sidebar")} onClick={handleOpen}>
+    <div className={"group block cursor-pointer rounded-md mb-2 " + (isActive ? "bg-sidebar" : "hover:bg-sidebar")}>
       <div className="pl-3 pr-2 py-3">
         <div className="flex items-center gap-3 text-muted-foreground text-sm">
 
-          <div className="truncate gap-2 flex flex-col">
+          <div className="truncate gap-2 flex flex-col" onClick={handleOpen}>
 
-            <div className={" text-[16px] truncate font-semibold " + (isActive ? "text-foreground" : "text-foreground") }>
+            <div className={" text-lg truncate font-semibold " + (isActive ? "text-foreground" : "text-foreground") }>
             {note.status === 'generating' ? (
               <span className="inline-flex items-center gap-2">
                 <IconLoader2 className="size-4 animate-spin" />

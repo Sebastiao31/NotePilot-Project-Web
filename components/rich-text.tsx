@@ -15,8 +15,9 @@ import {
   IconUnderline,
   IconList,
   IconListNumbers,
+  IconLoader2,
 } from "@tabler/icons-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { useEditorBridge } from "./editor-bridge";
 import BubbleMenuFloating from "./textTools/bubble-menu";
@@ -65,6 +66,7 @@ const Tiptap = ({ initialDoc, fallbackMarkdown, editable }: Props) => {
     },
     immediatelyRender: false,
   });
+  
 
   useEffect(() => {
     if (!editor) return
@@ -157,12 +159,12 @@ const Tiptap = ({ initialDoc, fallbackMarkdown, editable }: Props) => {
     <>
       <div className="flex flex-col">
         <div className="w-full p-2">
+
           
           <div className="relative">
             <BubbleMenuFloating />
             <EditorContent editor={editor} className="tiptap" />
           </div>
-          
         </div>
       </div>
     </>

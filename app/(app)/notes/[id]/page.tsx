@@ -42,9 +42,9 @@ const Page = () => {
   }, [db, id])
 
   return (
-    <div className='p-6 bg-background-primary h-full'>
+    <div className='p-6 bg-background-primary h-full max-w-7xl mx-auto'>
 
-      <div> 
+      <div className=""> 
           <RichText initialDoc={noteDoc} fallbackMarkdown={content} />
       </div>
 
